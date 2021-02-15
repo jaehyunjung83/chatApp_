@@ -1,23 +1,51 @@
-import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
-import {Title} from 'react-native-paper';
-import FormButton from '../components/FormButton';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {List, Divider} from 'react-native-paper';
+
 import {useDispatch, useSelector} from 'react-redux';
-import {logOut} from '../actions/userActions';
+import {fetchRooms} from '../actions/roomsActions';
+import Loading from '../components/Loading';
 
 export default function HomeScreen({navigation}) {
-  const {userId} = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const {rooms, loading} = useSelector((state) => state.rooms);
+
+  useEffect(() => {
+    dispatch(fetchRooms());
+    //console.log(unsubscribe);
+    /**
+     * unsubscribe listener
+     */
+  }, []);
+
+  const renderLoadingScreen = () => {
+    return <Loading />;
+  };
+
   return (
     <View style={styles.container}>
-      <Title>Home Screen</Title>
-      <Title>{userId ? 'Logged In' : 'Logged Out'}</Title>
-      <Title>All chat rooms will be listed here</Title>
-      <FormButton
-        modeValue="contained"
-        title="Logout"
-        onPress={() => dispatch(logOut())}
-      />
+      {loading ? (
+        renderLoadingScreen()
+      ) : (
+        <FlatList
+          data={rooms}
+          keyExtractor={(item) => item._id}
+          ItemSeparatorComponent={() => <Divider />}
+          renderItem={({item}) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Room', {room: item})}>
+              <List.Item
+                title={item.name}
+                description={item.latestMessage.text}
+                titleNumberOfLines={1}
+                titleStyle={styles.listTitle}
+                descriptionStyle={styles.listDescription}
+                descriptionNumberOfLines={1}
+              />
+            </TouchableOpacity>
+          )}
+        />
+      )}
     </View>
   );
 }
@@ -26,7 +54,11 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#f5f5f5',
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  },
+  listTitle: {
+    fontSize: 22,
+  },
+  listDescription: {
+    fontSize: 16,
   },
 });

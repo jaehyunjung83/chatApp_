@@ -1,55 +1,56 @@
 import {
-  SEND_MESSAGE_FAIL,
-  SEND_MESSAGE_INIT,
-  SEND_MESSAGE_SUCCESS,
-  FETCH_MESSAGES_FAIL,
-  FETCH_MESSAGES_INIT,
-  FETCH_MESSAGES_SUCCESS,
+  ROOM_CREATE_FAIL,
+  ROOM_CREATE_INIT,
+  ROOM_CREATE_SUCCESS,
+  FETCH_ROOMS_FAIL,
+  FETCH_ROOMS_INIT,
+  FETCH_ROOMS_SUCCESS,
 } from '../actions/actionTypes';
 
 const initialState = {
   loading: false,
   error: null,
-  messages: [],
+  rooms: [],
 };
 
-export default function messagesReducer(state = initialState, action) {
+export default function roomsReducer(state = [], action) {
   switch (action.type) {
-    case SEND_MESSAGE_INIT:
+    case ROOM_CREATE_INIT:
       return {
         ...state,
         loading: true,
       };
-    case SEND_MESSAGE_SUCCESS:
+    case ROOM_CREATE_SUCCESS:
       return {
         ...state,
         loading: false,
         error: null,
       };
-    case SEND_MESSAGE_FAIL:
+    case ROOM_CREATE_FAIL:
       return {
         ...state,
         loading: false,
         error: null,
       };
 
-    case FETCH_MESSAGES_INIT:
+    case FETCH_ROOMS_INIT:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_MESSAGES_SUCCESS:
+    case FETCH_ROOMS_SUCCESS:
       return {
-        messages: action.payload,
+        rooms: action.payload,
         loading: false,
         error: null,
       };
-    case FETCH_MESSAGES_FAIL:
+    case FETCH_ROOMS_FAIL:
       return {
         ...state,
         loading: false,
         error: null,
       };
+
     default:
       return state;
   }

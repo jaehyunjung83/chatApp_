@@ -2,24 +2,18 @@ import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {IconButton, Title} from 'react-native-paper';
 import firebase from 'firebase';
+import {useDispatch} from 'react-redux';
 
 import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
+import {createRoom} from '../actions/roomsActions';
 
 export default function AddRoomScreen({navigation}) {
   const [roomName, setRoomName] = useState('');
+  const dispatch = useDispatch();
+
   const handleButtonPress = () => {
-    if (roomName.length > 0) {
-      firebase
-        .firestore()
-        .collection('rooms')
-        .add({
-          name: roomName,
-        })
-        .then(() => {
-          navigation.navigate('Home');
-        });
-    }
+    dispatch(createRoom(roomName, navigation));
   };
   return (
     <View style={styles.rootContainer}>
@@ -27,7 +21,7 @@ export default function AddRoomScreen({navigation}) {
         <IconButton
           icon="close-circle"
           size={36}
-          color="#6646ee"
+          color="#255c99"
           onPress={() => navigation.goBack()}
         />
       </View>

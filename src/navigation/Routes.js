@@ -9,6 +9,7 @@ import {checkAuthState, login} from '../actions/userActions';
 
 import HomeScreen from '../screens/HomeScreen';
 import AddRoomScreen from '../screens/AddRoomScreen';
+import RoomScreen from '../screens/RoomScreen';
 
 const Stack = createStackNavigator();
 const ChatAppStack = createStackNavigator();
@@ -19,7 +20,7 @@ const ChatApp = () => {
     <ChatAppStack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#213453',
+          backgroundColor: '#255c99',
         },
         headerTintColor: '#ffffff',
         headerTitleStyle: {
@@ -38,6 +39,13 @@ const ChatApp = () => {
               onPress={() => navigation.navigate('AddRoom')}
             />
           ),
+        })}
+      />
+      <ChatAppStack.Screen
+        name="Room"
+        component={RoomScreen}
+        options={({route}) => ({
+          title: route.params.room.name,
         })}
       />
     </ChatAppStack.Navigator>
