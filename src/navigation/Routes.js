@@ -1,19 +1,30 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import firebase from 'firebase';
 import {IconButton} from 'react-native-paper';
 
-import {checkAuthState, login} from '../actions/userActions';
+import {authUser} from '../actions/userActions';
 
 import HomeScreen from '../screens/HomeScreen';
 import AddRoomScreen from '../screens/AddRoomScreen';
 import RoomScreen from '../screens/RoomScreen';
+import SignInScreen from '../screens/SignInScreen';
+import SignUpScreen from '../screens/SignUpScreen';
+import Loading from '../components/Loading';
 
-const Stack = createStackNavigator();
 const ChatAppStack = createStackNavigator();
+const Login = createStackNavigator();
 const ModalStack = createStackNavigator();
+
+const LoginStack = () => {
+  return (
+    <Login.Navigator headerMode="none">
+      <Login.Screen name="SignIn" component={SignInScreen} headerMode="none" />
+      <Login.Screen name="SignUp" component={SignUpScreen} headerMode="none" />
+    </Login.Navigator>
+  );
+};
 
 const ChatApp = () => {
   return (
@@ -62,17 +73,15 @@ const HomeStack = () => {
 };
 
 export default function Routes() {
-  const {userId} = useSelector((state) => state.user);
+  const {data, login, loading} = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //firebase.auth().signOut();
-    dispatch(checkAuthState());
+    dispatch(authUser());
   }, []);
-  console.log(userId);
   return (
     <NavigationContainer>
-      <HomeStack />
+      {loading ? <Loading /> : login ? <HomeStack /> : <LoginStack />}
     </NavigationContainer>
   );
 }

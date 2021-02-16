@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {IconButton, Title} from 'react-native-paper';
-import firebase from 'firebase';
 import {useDispatch} from 'react-redux';
 
 import FormInput from '../components/FormInput';

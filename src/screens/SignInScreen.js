@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -14,25 +14,28 @@ import {useSelector, useDispatch} from 'react-redux';
 import {emailValid} from '../utils';
 import {AppStyles} from '../AppStyles';
 import Loading from '../components/Loading';
-import {createUser} from '../actions/userActions';
+import {loginUser, resetPassword} from '../actions/userActions';
+import ResetPassword from '../components/resetPassword/ResetPassword';
 
 export default function SignUpScreen({navigation}) {
   const {control, handleSubmit, errors, clearErrors, setError} = useForm({
     defaultValues: {email: '', password: '', confirmPassword: ''},
   });
-
+  const [modalVisible, setModalVisible] = useState(false);
   const {loading} = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
+  const sendResetPasswordLink = (email) => {
+    dispatch(resetPassword(email));
+    setModalVisible(false);
+  };
+  const resetPasswordModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
   const onSubmitHandler = (data) => {
-    if (data.password !== data.confirmPassword) {
-      return setError('confirmPassword', {
-        type: 'validate',
-        message: 'Passwords are not equal',
-      });
-    }
-    dispatch(createUser(data.email, data.password));
+    dispatch(loginUser(data.email, data.password));
   };
 
   const isEmailValid = (email) => {
@@ -49,7 +52,7 @@ export default function SignUpScreen({navigation}) {
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
-      <Text style={[styles.title]}>Sign Up</Text>
+      <Text style={[styles.title]}>Sign In</Text>
       <Controller
         control={control}
         render={({onChange, value}) => (
@@ -114,52 +117,31 @@ export default function SignUpScreen({navigation}) {
       {errors?.password && (
         <Text style={styles.errorText}>{errors?.password?.message}</Text>
       )}
-
-      <Controller
-        control={control}
-        render={({onChange, value}) => (
-          <View style={styles.InputContainer}>
-            <TextInput
-              style={styles.body}
-              secureTextEntry={true}
-              placeholder="Confirm password"
-              onChangeText={(value) => onChange(value.trim())}
-              onFocus={() => clearErrors('confirmPassword')}
-              value={value}
-              autoCapitalize="none"
-              placeholderTextColor={AppStyles.solidColor}
-              underlineColorAndroid="transparent"
-            />
-          </View>
-        )}
-        name="confirmPassword"
-        rules={{
-          required: {
-            value: true,
-            message: 'E-mail is required.',
-          },
-          minLength: {
-            value: 6,
-            message: 'Password must be at least 6 characters long',
-          },
-        }}
-      />
-      {errors?.confirmPassword && (
-        <Text style={styles.errorText}>{errors.confirmPassword.message}</Text>
-      )}
-
       <TouchableOpacity
         style={styles.loginContainer}
         onPress={handleSubmit(onSubmitHandler)}>
-        {loading ? <Loading /> : <Text style={styles.loginText}>SIGN UP</Text>}
+        {loading ? <Loading /> : <Text style={styles.loginText}>SIGN IN</Text>}
       </TouchableOpacity>
       <View style={styles.footerStyle}>
+        <>
+          <TouchableOpacity
+            style={styles.subButton}
+            onPress={() => resetPasswordModal()}>
+            <Text style={styles.subText}> Forget Password</Text>
+          </TouchableOpacity>
+          <Text style={styles.subText}> / </Text>
+        </>
         <TouchableOpacity
           style={styles.subButton}
-          onPress={() => navigation.navigate('SignIn')}>
-          <Text style={styles.subText}>Log In</Text>
+          onPress={() => navigation.navigate('SignUp')}>
+          <Text style={styles.subText}>Create User</Text>
         </TouchableOpacity>
       </View>
+      <ResetPassword
+        isDialogVisible={modalVisible}
+        closeDialog={resetPasswordModal}
+        submitInput={sendResetPasswordLink}
+      />
     </KeyboardAvoidingView>
   );
 }

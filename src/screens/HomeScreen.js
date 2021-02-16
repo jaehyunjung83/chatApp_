@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {List, Divider} from 'react-native-paper';
 

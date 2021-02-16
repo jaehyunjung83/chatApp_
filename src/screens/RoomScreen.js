@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {
@@ -20,31 +21,11 @@ export default function RoomScreen({route}) {
   useEffect(() => {
     dispatch(fetchMessages(room));
   }, []);
-  /**
-     * Mock message data
-     
-    // example of system message
-    {
-      _id: 0,
-      text: 'New room created.',
-      createdAt: new Date().getTime(),
-      system: true,
-    },
-    // example of chat message
-    {
-      _id: 1,
-      text: 'Hello!',
-      createdAt: new Date().getTime(),
-      user: {
-        _id: 2,
-        name: 'Test User',
-      },
-    },
-*/
+
   const loadingComponent = () => {
     return (
       <View style={styles.loadingStyles}>
-        <ActivityIndicator size="large" color="#6646ee" />
+        <ActivityIndicator size="large" color="#255c99" />
       </View>
     );
   };
@@ -57,7 +38,7 @@ export default function RoomScreen({route}) {
         wrapperStyle={{
           right: {
             // Here is the color change
-            backgroundColor: '#6646ee',
+            backgroundColor: '#255c99',
           },
         }}
         textStyle={{

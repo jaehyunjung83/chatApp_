@@ -1,10 +1,10 @@
-import firebase from '../confiq/firebase';
+import firebase from '../config/firebase';
 
 export const setRef = () => {
   let senderUserId = firebase.currentUser();
-  let recieverUserId = '1234';
+  let receiverUserId = '1234';
 
-  const uniRef = senderUserId + '/' + recieverUserId;
+  const uniRef = senderUserId + '/' + receiverUserId;
   return uniRef;
 };
 
