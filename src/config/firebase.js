@@ -1,14 +1,19 @@
-import * as firebase from 'firebase';
+import firebase from '@react-native-firebase/app';
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import messaging from '@react-native-firebase/messaging';
+
+import Config from 'react-native-config';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyAdm_UJeGuY3vxv2ZjLuupS-LuJJZtxiKs',
-  authDomain: 'chatapp-a0eae.firebaseapp.com',
-  projectId: 'chatapp-a0eae',
-  storageBucket: 'chatapp-a0eae.appspot.com',
-  messagingSenderId: '978617145962',
-  appId: '1:978617145962:web:1673da13b81138a9e6c813',
-  measurementId: 'G-X7PQFGTWCZ',
+  apiKey: Config.API_KEY,
+  authDomain: Config.AUTH_DOMAIN,
+  projectId: Config.PROJECT_ID,
+  storageBucket: Config.STORAGE_BUCKET,
+  messagingSenderId: Config.MESSAGING_SENDER_ID,
+  appId: Config.APP_ID,
+  measurementId: Config.MEASUREMENT_ID,
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-export default firebase;
+export {firebase, firestore, auth, messaging};

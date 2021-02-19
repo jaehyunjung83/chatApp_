@@ -2,6 +2,12 @@
 #
 .DS_Store
 
+#.env
+.env
+
+android/app/google-services.json
+
+ios/GoogleService-Info.plist
 # Xcode
 #
 build/
@@ -26,7 +32,6 @@ DerivedData
 build/
 .idea
 .gradle
-local.properties
 *.iml
 
 # node.js

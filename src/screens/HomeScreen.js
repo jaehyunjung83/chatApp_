@@ -1,6 +1,13 @@
 import React, {useEffect} from 'react';
-import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import {List, Divider} from 'react-native-paper';
+import {messaging} from '../config/firebase';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchRooms} from '../actions/roomsActions';
@@ -12,11 +19,25 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     dispatch(fetchRooms());
-    //console.log(unsubscribe);
-    /**
-     * unsubscribe listener
-     */
+    //firebase.auth().signOut();
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage,
+      );
+      //navigation.navigate(remoteMessage.data.type);
+    });
+
+    return unsubscribe;
   }, []);
+
+  messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+    console.log('Message handled in the background!', remoteMessage);
+  });
 
   const renderLoadingScreen = () => {
     return <Loading />;

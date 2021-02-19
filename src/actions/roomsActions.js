@@ -1,7 +1,7 @@
-import firebase from '../config/firebase';
+import {firestore, auth} from '../config/firebase';
 
 export const setRef = () => {
-  let senderUserId = firebase.currentUser();
+  let senderUserId = auth().currentUser();
   let receiverUserId = '1234';
 
   const uniRef = senderUserId + '/' + receiverUserId;
@@ -35,15 +35,16 @@ export const fetchRoomsFail = (error) => ({
 });
 
 export const fetchRooms = () => {
+  //firebase.firestore().settings({experimentalForceLongPolling: true});
+
   return async (dispatch) => {
     dispatch(fetchRoomsInit());
     try {
-      await firebase
-        .firestore()
+      await firestore()
         .collection('rooms')
         .orderBy('latestMessage.createdAt', 'desc')
         .onSnapshot((querySnapshot) => {
-          console.log('data=', querySnapshot.empty);
+          //console.log('data=', querySnapshot.empty);
           let data = [];
           if (!querySnapshot.empty) {
             data = querySnapshot.docs.map((documentSnapshot) => {
@@ -57,8 +58,8 @@ export const fetchRooms = () => {
                 ...documentSnapshot.data(),
               };
             });
+            return dispatch(fetchRoomsSuccess(data));
           }
-          return dispatch(fetchRoomsSuccess(data));
         });
     } catch (error) {
       return dispatch(fetchRoomsFail(error));
@@ -71,8 +72,7 @@ export const createRoom = (roomName, navigation) => {
     dispatch(createRoomInit());
     try {
       if (roomName.length > 0) {
-        firebase
-          .firestore()
+        firestore()
           .collection('rooms')
           .add({
             name: roomName,

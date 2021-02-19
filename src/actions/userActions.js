@@ -1,4 +1,5 @@
-import firebase from '../config/firebase';
+import {auth, firestore} from '../config/firebase';
+import Toast from 'react-native-toast-message';
 import {Platform} from 'react-native';
 import {
   AUTH_USER_CREATE_FAIL,
@@ -18,13 +19,9 @@ import {
   AUTH_CHANGE_PASSWORD_SUCCESS,
 } from './actionTypes';
 
-const {auth} = firebase;
-const {firestore} = firebase;
-
 export const authUser = () => {
   return async (dispatch) => {
     dispatch({type: AUTH_USER_INIT});
-    let user;
     try {
       await auth().onAuthStateChanged((user) => {
         if (user) {
@@ -56,47 +53,47 @@ export const changePassword = (password, newPassword) => {
       );
       user = response.user;
     } catch (error) {
-      // Toast.show({
-      //   type: 'error',
-      //   position: 'top',
-      //   text1: 'Error',
-      //   text2: 'Wrong password, Please check your password and try again.',
-      //   visibilityTime: 3000,
-      //   autoHide: true,
-      //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-      //   onShow: () => {},
-      //   onHide: () => {},
-      //   onPress: () => {},
-      // });
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error',
+        text2: 'Wrong password, Please check your password and try again.',
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: Platform.OS === 'ios' ? 40 : 30,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {},
+      });
       return dispatch({type: AUTH_CHANGE_PASSWORD_FAIL, payload: error});
     }
     try {
       await firebaseUser.updatePassword(newPassword);
-      // Toast.show({
-      //   type: 'success',
-      //   position: 'top',
-      //   text1: 'Success',
-      //   text2: 'Password changed successfully.',
-      //   visibilityTime: 3000,
-      //   autoHide: true,
-      //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-      //   onShow: () => {},
-      //   onHide: () => {},
-      //   onPress: () => {},
-      // });
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Success',
+        text2: 'Password changed successfully.',
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: Platform.OS === 'ios' ? 40 : 30,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {},
+      });
     } catch (error) {
-      // Toast.show({
-      //   type: 'error',
-      //   position: 'top',
-      //   text1: 'Error',
-      //   text2: 'Please first logout and try again.',
-      //   visibilityTime: 3000,
-      //   autoHide: true,
-      //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-      //   onShow: () => {},
-      //   onHide: () => {},
-      //   onPress: () => {},
-      // });
+      Toast.show({
+        type: 'error',
+        position: 'top',
+        text1: 'Error',
+        text2: 'Please first logout and try again.',
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: Platform.OS === 'ios' ? 40 : 30,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {},
+      });
       return dispatch({type: AUTH_CHANGE_PASSWORD_FAIL, payload: error});
     }
     logoutUser();
@@ -108,47 +105,47 @@ export const resetPassword = (email) => {
   return async (dispatch) => {
     try {
       await auth().sendPasswordResetEmail(email);
-      // Toast.show({
-      //   type: 'success',
-      //   position: 'top',
-      //   text1: 'Attention',
-      //   text2:
-      //     'Your password reset link send to your e-mail address, check your e-mail.',
-      //   visibilityTime: 3000,
-      //   autoHide: true,
-      //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-      //   onShow: () => {},
-      //   onHide: () => {},
-      //   onPress: () => {},
-      // });
+      Toast.show({
+        type: 'success',
+        position: 'top',
+        text1: 'Attention',
+        text2:
+          'Your password reset link send to your e-mail address, check your e-mail.',
+        visibilityTime: 3000,
+        autoHide: true,
+        topOffset: Platform.OS === 'ios' ? 40 : 30,
+        onShow: () => {},
+        onHide: () => {},
+        onPress: () => {},
+      });
     } catch (error) {
-      // if (error.code == 'auth/user-not-found') {
-      //   Toast.show({
-      //     type: 'error',
-      //     position: 'top',
-      //     text1: 'Error',
-      //     text2: 'E-mail address is not found.',
-      //     visibilityTime: 3000,
-      //     autoHide: true,
-      //     topOffset: Platform.OS == 'ios' ? 40 : 30,
-      //     onShow: () => {},
-      //     onHide: () => {},
-      //     onPress: () => {},
-      //   });
-      // } else {
-      //   Toast.show({
-      //     type: 'error',
-      //     position: 'top',
-      //     text1: 'Error',
-      //     text2: 'Please check your e-mail address.',
-      //     visibilityTime: 3000,
-      //     autoHide: true,
-      //     topOffset: Platform.OS == 'ios' ? 40 : 30,
-      //     onShow: () => {},
-      //     onHide: () => {},
-      //     onPress: () => {},
-      //   });
-      // }
+      if (error.code === 'auth/user-not-found') {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error',
+          text2: 'E-mail address is not found.',
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: Platform.OS === 'ios' ? 40 : 30,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
+      } else {
+        Toast.show({
+          type: 'error',
+          position: 'top',
+          text1: 'Error',
+          text2: 'Please check your e-mail address.',
+          visibilityTime: 3000,
+          autoHide: true,
+          topOffset: Platform.OS === 'ios' ? 40 : 30,
+          onShow: () => {},
+          onHide: () => {},
+          onPress: () => {},
+        });
+      }
     }
   };
 };
@@ -175,18 +172,18 @@ export const loginUser = (email, password) => {
     } catch (error) {
       switch (error.code) {
         case 'auth/invalid-email':
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text1: 'Error',
-          //   text2: 'E-mail address is invalid.',
-          //   visibilityTime: 3000,
-          //   autoHide: true,
-          //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-          //   onShow: () => {},
-          //   onHide: () => {},
-          //   onPress: () => {},
-          // });
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error',
+            text2: 'E-mail address is invalid.',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: Platform.OS === 'ios' ? 40 : 30,
+            onShow: () => {},
+            onHide: () => {},
+            onPress: () => {},
+          });
           return dispatch({
             type: AUTH_USER_LOGIN_FAIL,
             payload: {
@@ -195,18 +192,18 @@ export const loginUser = (email, password) => {
             },
           });
         case 'auth/user-not-found':
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text1: 'Error',
-          //   text2: 'User not found, please first sign up.',
-          //   visibilityTime: 3000,
-          //   autoHide: true,
-          //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-          //   onShow: () => {},
-          //   onHide: () => {},
-          //   onPress: () => {},
-          // });
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error',
+            text2: 'User not found, please first sign up.',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: Platform.OS === 'ios' ? 40 : 30,
+            onShow: () => {},
+            onHide: () => {},
+            onPress: () => {},
+          });
           return dispatch({
             type: AUTH_USER_LOGIN_FAIL,
             payload: {
@@ -215,18 +212,18 @@ export const loginUser = (email, password) => {
             },
           });
         case 'auth/wrong-password':
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text1: 'Error',
-          //   text2: 'Wrong password, please try again.',
-          //   visibilityTime: 3000,
-          //   autoHide: true,
-          //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-          //   onShow: () => {},
-          //   onHide: () => {},
-          //   onPress: () => {},
-          // });
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error',
+            text2: 'Wrong password, please try again.',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: Platform.OS === 'ios' ? 40 : 30,
+            onShow: () => {},
+            onHide: () => {},
+            onPress: () => {},
+          });
           return dispatch({
             type: AUTH_USER_LOGIN_FAIL,
             payload: {
@@ -235,25 +232,24 @@ export const loginUser = (email, password) => {
             },
           });
         default:
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text1: 'Error',
-          //   text2:
-          //     'Please check your e-mail address and password then try again.',
-          //   visibilityTime: 3000,
-          //   autoHide: true,
-          //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-          //   onShow: () => {},
-          //   onHide: () => {},
-          //   onPress: () => {},
-          // });
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error',
+            text2:
+              'Please check your e-mail address and password then try again.',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: Platform.OS === 'ios' ? 40 : 30,
+            onShow: () => {},
+            onHide: () => {},
+            onPress: () => {},
+          });
           return dispatch({
             type: AUTH_USER_LOGIN_FAIL,
             payload: {
               type: 'auth/',
-              message:
-                'Please check your e-mail address and password then try again.',
+              message: error.message,
             },
           });
       }
@@ -284,21 +280,20 @@ export const createUser = (email, password) => {
       await writeDataToStore(user);
       userData = user;
     } catch (error) {
-      console.log(error);
       switch (error.code) {
         case 'auth/email-already-in-use':
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text1: 'Error',
-          //   text2: 'E-mail address is already in use.',
-          //   visibilityTime: 3000,
-          //   autoHide: true,
-          //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-          //   onShow: () => {},
-          //   onHide: () => {},
-          //   onPress: () => {},
-          // });
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error',
+            text2: 'E-mail address is already in use.',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: Platform.OS === 'ios' ? 40 : 30,
+            onShow: () => {},
+            onHide: () => {},
+            onPress: () => {},
+          });
           return dispatch({
             type: AUTH_USER_CREATE_FAIL,
             payload: {
@@ -307,18 +302,18 @@ export const createUser = (email, password) => {
             },
           });
         case 'auth/invalid-email':
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text1: 'Error',
-          //   text2: 'Invalid E-mail address',
-          //   visibilityTime: 3000,
-          //   autoHide: true,
-          //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-          //   onShow: () => {},
-          //   onHide: () => {},
-          //   onPress: () => {},
-          // });
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error',
+            text2: 'Invalid E-mail address',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: Platform.OS === 'ios' ? 40 : 30,
+            onShow: () => {},
+            onHide: () => {},
+            onPress: () => {},
+          });
           return dispatch({
             type: AUTH_USER_CREATE_FAIL,
             payload: {
@@ -327,18 +322,18 @@ export const createUser = (email, password) => {
             },
           });
         case 'auth/invalid-password':
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text1: 'Error',
-          //   text2: 'Wrong password.',
-          //   visibilityTime: 3000,
-          //   autoHide: true,
-          //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-          //   onShow: () => {},
-          //   onHide: () => {},
-          //   onPress: () => {},
-          // });
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error',
+            text2: 'Wrong password.',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: Platform.OS === 'ios' ? 40 : 30,
+            onShow: () => {},
+            onHide: () => {},
+            onPress: () => {},
+          });
           return dispatch({
             type: AUTH_USER_CREATE_FAIL,
             payload: {
@@ -348,19 +343,19 @@ export const createUser = (email, password) => {
           });
 
         default:
-          // Toast.show({
-          //   type: 'error',
-          //   position: 'top',
-          //   text1: 'Error',
-          //   text2:
-          //     'Please check your e-mail address and password then try again.',
-          //   visibilityTime: 3000,
-          //   autoHide: true,
-          //   topOffset: Platform.OS == 'ios' ? 40 : 30,
-          //   onShow: () => {},
-          //   onHide: () => {},
-          //   onPress: () => {},
-          // });
+          Toast.show({
+            type: 'error',
+            position: 'top',
+            text1: 'Error',
+            text2:
+              'Please check your e-mail address and password then try again.',
+            visibilityTime: 3000,
+            autoHide: true,
+            topOffset: Platform.OS === 'ios' ? 40 : 30,
+            onShow: () => {},
+            onHide: () => {},
+            onPress: () => {},
+          });
           return dispatch({
             type: AUTH_USER_CREATE_FAIL,
             payload: {

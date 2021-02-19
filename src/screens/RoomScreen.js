@@ -9,18 +9,28 @@ import {
 } from 'react-native-gifted-chat';
 import {IconButton} from 'react-native-paper';
 import {useSelector, useDispatch} from 'react-redux';
+//import 'dayjs/locale/tr';
 
-import {fetchMessages, sendMessage} from '../actions/messageActions';
+import {
+  fetchMessages,
+  sendMessage,
+  setMessageReceived,
+} from '../actions/messageActions';
 
 export default function RoomScreen({route}) {
   const {room} = route.params;
-  const {userId} = useSelector((state) => state.user);
-  const {messages} = useSelector((state) => state.messages);
+  const {data} = useSelector((state) => state.user);
+  const {messagesList} = useSelector((state) => state.messages);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(fetchMessages(room));
+    //firebase.auth().signOut();
   }, []);
+
+  useEffect(() => {
+    dispatch(setMessageReceived(room));
+  }, [messagesList]);
 
   const loadingComponent = () => {
     return (
@@ -32,7 +42,6 @@ export default function RoomScreen({route}) {
 
   const renderBubble = (props) => {
     return (
-      // Step 3: return the component
       <Bubble
         {...props}
         wrapperStyle={{
@@ -40,9 +49,16 @@ export default function RoomScreen({route}) {
             // Here is the color change
             backgroundColor: '#255c99',
           },
+          left: {
+            // Here is the color change
+            backgroundColor: '#255c99',
+          },
         }}
         textStyle={{
           right: {
+            color: '#fff',
+          },
+          left: {
             color: '#fff',
           },
         }}
@@ -84,14 +100,15 @@ export default function RoomScreen({route}) {
 
   return (
     <GiftedChat
-      messages={messages}
+      messages={messagesList}
       onSend={(newMessage) => sendMessageToStore(newMessage)}
-      user={{_id: userId}}
+      user={{_id: data.userId, name: data.email}}
       renderBubble={renderBubble}
       placeholder="Type your message here..."
       showUserAvatar
       renderSend={renderSendButton}
       alwaysShowSend
+      //locale="tr"
       scrollToBottom
       scrollToBottomComponent={scrollToBottomIcon}
       renderLoading={loadingComponent}

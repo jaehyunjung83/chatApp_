@@ -10,7 +10,7 @@ import {
 const initialState = {
   loading: false,
   error: null,
-  rooms: [],
+  roomsList: [],
 };
 
 export default function roomsReducer(state = [], action) {

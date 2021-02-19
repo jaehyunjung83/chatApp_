@@ -5,12 +5,15 @@ import {
   FETCH_MESSAGES_FAIL,
   FETCH_MESSAGES_INIT,
   FETCH_MESSAGES_SUCCESS,
+  SET_MESSAGES_RECEIVED_INIT,
+  SET_MESSAGES_RECEIVED_FAIL,
+  SET_MESSAGES_RECEIVED_SUCCESS,
 } from '../actions/actionTypes';
 
 const initialState = {
   loading: false,
   error: null,
-  messages: [],
+  messagesList: [],
 };
 
 export default function messagesReducer(state = initialState, action) {
@@ -30,7 +33,7 @@ export default function messagesReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        error: null,
+        error: action.payload,
       };
 
     case FETCH_MESSAGES_INIT:
@@ -40,7 +43,7 @@ export default function messagesReducer(state = initialState, action) {
       };
     case FETCH_MESSAGES_SUCCESS:
       return {
-        messages: action.payload,
+        messagesList: action.payload,
         loading: false,
         error: null,
       };
@@ -48,7 +51,21 @@ export default function messagesReducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        error: null,
+        error: action.payload,
+      };
+
+    case SET_MESSAGES_RECEIVED_INIT:
+      return {
+        ...state,
+      };
+    case SET_MESSAGES_RECEIVED_SUCCESS:
+      return {
+        ...state,
+      };
+    case SET_MESSAGES_RECEIVED_FAIL:
+      return {
+        ...state,
+        error: action.payload,
       };
     default:
       return state;

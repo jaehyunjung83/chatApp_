@@ -15,6 +15,8 @@ export const AppStyles = {
   contentFontSize: 20,
   defaultFontSize: 16,
 
+  iconSize: 28,
+
   buttonWidth: width * 0.6,
   buttonHeight: 42,
 

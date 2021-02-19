@@ -5,7 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {IconButton} from 'react-native-paper';
 
 import {authUser} from '../actions/userActions';
-
+import {AppStyles} from '../AppStyles';
 import HomeScreen from '../screens/HomeScreen';
 import AddRoomScreen from '../screens/AddRoomScreen';
 import RoomScreen from '../screens/RoomScreen';
@@ -31,9 +31,9 @@ const ChatApp = () => {
     <ChatAppStack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#255c99',
+          backgroundColor: AppStyles.primaryColor,
         },
-        headerTintColor: '#ffffff',
+        headerTintColor: AppStyles.textColor,
         headerTitleStyle: {
           fontSize: 22,
         },
@@ -45,8 +45,8 @@ const ChatApp = () => {
           headerRight: () => (
             <IconButton
               icon="message-plus"
-              size={28}
-              color="#ffffff"
+              size={AppStyles.iconSize}
+              color={AppStyles.textColor}
               onPress={() => navigation.navigate('AddRoom')}
             />
           ),

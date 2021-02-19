@@ -1,7 +1,7 @@
-import firebase from '../config/firebase';
+import {firestore, auth} from '../config/firebase';
 
 export const setRef = () => {
-  let senderUserId = firebase.currentUser();
+  let senderUserId = auth().currentUser();
   let receiverUserId = '1234';
 
   const uniRef = senderUserId + '/' + receiverUserId;
@@ -35,14 +35,51 @@ export const fetchMessagesFail = (error) => ({
   payload: error,
 });
 
+export const setMessageReceivedInit = () => ({
+  type: 'SET_MESSAGES_RECEIVED_INIT',
+});
+
+export const setMessageReceivedSuccess = (messages) => ({
+  type: 'SET_MESSAGES_RECEIVED_SUCCESS',
+});
+
+export const setMessageReceivedFail = (error) => ({
+  type: 'SET_MESSAGES_RECEIVED_FAIL',
+  payload: error,
+});
+
+export const setMessageReceived = (room) => {
+  return async (dispatch, getState) => {
+    dispatch(setMessageReceivedInit());
+    const {
+      messages: {messagesList},
+      user: {
+        data: {userId},
+      },
+    } = getState();
+    messagesList.map((message) => {
+      if (!message.received && message.user._id !== userId) {
+        firestore()
+          .collection('rooms')
+          .doc(room._id)
+          .collection('MESSAGES')
+          .doc(message._id)
+          .update({received: true})
+          .then(() => dispatch(setMessageReceivedSuccess()))
+          .catch((error) => dispatch(setMessageReceivedFail(error)));
+      }
+    });
+  };
+};
+
 export const sendMessage = (room, text) => {
   return async (dispatch, getState) => {
     dispatch(sendMessageInit());
-    const {user} = getState();
-
+    const {
+      user: {data},
+    } = getState();
     try {
-      await firebase
-        .firestore()
+      await firestore()
         .collection('rooms')
         .doc(room._id)
         .collection('MESSAGES')
@@ -50,11 +87,13 @@ export const sendMessage = (room, text) => {
           text,
           createdAt: new Date().getTime(),
           user: {
-            _id: user.userId,
+            _id: data.userId,
+            name: data.email,
           },
+          sent: true,
+          received: false,
         });
-      await firebase
-        .firestore()
+      await firestore()
         .collection('rooms')
         .doc(room._id)
         .set(
@@ -78,8 +117,7 @@ export const fetchMessages = (room) => {
     dispatch(fetchMessagesInit());
 
     try {
-      await firebase
-        .firestore()
+      await firestore()
         .collection('rooms')
         .doc(room._id)
         .collection('MESSAGES')
