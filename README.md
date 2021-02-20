@@ -20,7 +20,7 @@
 <p align="center">
     <img src="screenshots/addRoom.png" alt="alt text" width="165" height="358">
     <img src="screenshots/roomScreen.png" alt="alt text" width="165" height="358">
-    <img src="screenshots/chatscreen.png" alt="alt text" width="165" height="358">
+    <img src="screenshots/chatScreen.png" alt="alt text" width="165" height="358">
   </p>
 
 ## Installation
