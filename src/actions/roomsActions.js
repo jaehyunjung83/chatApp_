@@ -46,7 +46,7 @@ export const fetchRooms = () => {
         .onSnapshot((querySnapshot) => {
           //console.log('data=', querySnapshot.empty);
           let data = [];
-          if (!querySnapshot.empty) {
+          if (!querySnapshot?.empty) {
             data = querySnapshot.docs.map((documentSnapshot) => {
               return {
                 _id: documentSnapshot.id,

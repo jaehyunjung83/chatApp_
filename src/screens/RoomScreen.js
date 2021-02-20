@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, {useState, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import {View, StyleSheet, ActivityIndicator} from 'react-native';
 import {
   GiftedChat,

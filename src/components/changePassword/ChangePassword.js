@@ -9,7 +9,6 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import validation from '../validate/validate';
 
 export default function ChangePassword({
   isModalVisible,

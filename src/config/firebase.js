@@ -19,7 +19,8 @@ const firebaseConfig = {
   measurementId: Config.MEASUREMENT_ID,
 };
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+//firebase.initializeApp(firebaseConfig);
+!firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
 messaging().onMessage(async (remoteMessage) => {
   Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));

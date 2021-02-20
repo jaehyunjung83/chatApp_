@@ -1,17 +1,11 @@
 import React, {useEffect} from 'react';
-import {
-  View,
-  StyleSheet,
-  Alert,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import {List, Divider} from 'react-native-paper';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchRooms} from '../actions/roomsActions';
 import Loading from '../components/Loading';
-import {getToken} from '../utils';
+import {firebase} from '../config/firebase';
 
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();
@@ -19,8 +13,7 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     dispatch(fetchRooms());
-    //firebase.auth().signOut();
-    //getToken().then((res) => console.log(res));
+    firebase.auth().signOut();
   }, []);
 
   const renderLoadingScreen = () => {

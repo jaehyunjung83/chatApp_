@@ -58,7 +58,7 @@ export const setMessageReceived = (room) => {
       },
     } = getState();
     messagesList.map((message) => {
-      if (!message.received && message.user._id !== userId) {
+      if (!message?.received && message?.user._id !== userId) {
         firestore()
           .collection('rooms')
           .doc(room._id)
