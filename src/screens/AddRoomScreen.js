@@ -25,7 +25,7 @@ export default function AddRoomScreen({navigation}) {
         />
       </View>
       <View style={styles.innerContainer}>
-        <Title style={styles.title}>Create a new chat room</Title>
+        <Title style={styles.title}>대화하기</Title>
         <FormInput
           labelName="Room Name"
           value={roomName}

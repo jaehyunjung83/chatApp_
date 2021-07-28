@@ -6,17 +6,15 @@ import messaging from '@react-native-firebase/messaging';
 // import PushNotificationIOS from '@react-native-community/push-notification-ios';
 // import PushNotification from 'react-native-push-notification';
 
-import Config from 'react-native-config';
-
 const firebaseConfig = {
-  apiKey: Config.API_KEY,
-  authDomain: Config.AUTH_DOMAIN,
-  projectId: Config.PROJECT_ID,
-  storageBucket: Config.STORAGE_BUCKET,
-  databaseURL: Config.DATABASE_URL,
-  messagingSenderId: Config.MESSAGING_SENDER_ID,
-  appId: Config.APP_ID,
-  measurementId: Config.MEASUREMENT_ID,
+  apiKey: 'AIzaSyDIWbrZqWmrl-_zCIIZU5esohyQN2zEVl8',
+  authDomain: 'djsl-9198c.firebaseapp.com',
+  databaseURL: 'https://djsl-9198c.firebaseio.com',
+  projectId: 'djsl-9198c',
+  storageBucket: 'djsl-9198c.appspot.com',
+  messagingSenderId: '157599575981',
+  appId: '1:157599575981:web:547fba27ce658e96e9bb24',
+  measurementId: 'G-J44RR4X2BQ',
 };
 // Initialize Firebase
 //firebase.initializeApp(firebaseConfig);
@@ -124,4 +122,4 @@ AppRegistry.registerHeadlessTask(
 //   requestPermissions: true,
 // });
 
-export {firebase, firestore, auth, messaging};
+export {firebaseConfig, firebase, firestore, auth, messaging};

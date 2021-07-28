@@ -2,7 +2,7 @@ import {firestore, auth} from '../config/firebase';
 
 export const setRef = () => {
   let senderUserId = auth().currentUser();
-  let receiverUserId = '1234';
+  let receiverUserId = 'jjjh1983@gmail.com';
 
   const uniRef = senderUserId + '/' + receiverUserId;
   return uniRef;

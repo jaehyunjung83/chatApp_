@@ -91,7 +91,7 @@ export default function userReducer(state = initialState, action) {
       return {
         data: {
           userId: action.payload.uid,
-          createdAt: action.payload.metadata.createdAt,
+          createdAt: action.payload.metadata.creationTime,
           email: action.payload.email,
         },
         loading: false,

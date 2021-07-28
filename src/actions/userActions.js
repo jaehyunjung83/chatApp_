@@ -25,8 +25,10 @@ export const authUser = () => {
     try {
       await auth().onAuthStateChanged((user) => {
         if (user) {
+          console.log('user가 들어왔을 때 user', user);
           return dispatch({type: AUTH_USER_SUCCESS, payload: user});
         } else {
+          console.log('user가 안 들어왔을 때 user', user);
           return dispatch({
             type: AUTH_USER_FAIL,
             payload: {
@@ -39,6 +41,14 @@ export const authUser = () => {
     } catch (error) {
       dispatch({type: AUTH_USER_FAIL, payload: error});
     }
+    // let userState;
+    // try {
+    //   const {userstate} = await auth().onAuthStateChanged(user);
+    //   userState = userstate;
+    // } catch (error) {
+    //   dispatch({type: AUTH_USER_FAIL, payload: error});
+    // }
+    // return dispatch({type: AUTH_USER_LOGIN_SUCCESS, payload: userState});
   };
 };
 

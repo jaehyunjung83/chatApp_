@@ -1,4 +1,4 @@
-import Config from 'react-native-config';
+import firebaseConfig from '../config/firebase';
 import {messaging} from '../config/firebase';
 
 export const emailValid = (email) => {
@@ -7,7 +7,7 @@ export const emailValid = (email) => {
 };
 
 export const getToken = async () => {
-  const token = await messaging().getToken(Config.MESSAGE_SENDER_ID);
+  const token = await messaging().getToken(firebaseConfig.messagingSenderId);
 
   return token;
 };

@@ -13,7 +13,7 @@ export default function HomeScreen({navigation}) {
 
   useEffect(() => {
     dispatch(fetchRooms());
-    firebase.auth().signOut();
+    // firebase.auth().signOut();
   }, []);
 
   const renderLoadingScreen = () => {
