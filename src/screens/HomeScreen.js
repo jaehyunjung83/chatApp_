@@ -5,7 +5,8 @@ import {List, Divider} from 'react-native-paper';
 import {useDispatch, useSelector} from 'react-redux';
 import {fetchRooms} from '../actions/roomsActions';
 import Loading from '../components/Loading';
-import {firebase} from '../config/firebase';
+import {firebase} from '@react-native-firebase/functions';
+// import {firebase} from '../config/firebase';
 
 export default function HomeScreen({navigation}) {
   const dispatch = useDispatch();
@@ -19,6 +20,19 @@ export default function HomeScreen({navigation}) {
   const renderLoadingScreen = () => {
     return <Loading />;
   };
+
+  // note the name of our deployed function, 'listProducts', is referenced here:
+
+  const data = firebase.functions().httpsCallable('ListProducts');
+  try {
+    const response = data({
+      page: '1',
+      limit: '10',
+    });
+    console.log(response);
+   } catch (e) {
+    console.error(e);
+   }
 
   return (
     <View style={styles.container}>

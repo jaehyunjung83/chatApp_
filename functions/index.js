@@ -17,16 +17,24 @@ for (let i = 0; i < LIMIT; i++) {
   });
 }
 
+// console.table(products);
 
-console.table(products);
+// exports.hellowworld = functions.https.onRequest((request, response) => {
+//   response.send("Before deploy Test");
+// });
 
-exports.hellowworld = functions.https.onRequest((request, response) => {
-  response.send("Before deploy Test");
+// rnfirebase.io에 있는 oncall 예제는 안 됨! onrequest로 해야 emulator test가 됨
+exports.listProducts = functions.https.onRequest((request, response) => {
+  response.send(products);
 });
 
-exports.listProducts = functions.https.onCall((data, context) => {
-//   functions.logger.log("products", products);
-  return products;
+exports.ListProducts = functions.https.onCall((data, context) => {
+  const {page = 1, limit = 10} = data;
+
+  const startAt = (page - 1) * limit;
+  const endAt = startAt + limit;
+
+  return products.slice(startAt, endAt);
 });
 
 
