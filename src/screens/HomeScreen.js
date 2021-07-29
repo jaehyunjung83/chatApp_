@@ -50,13 +50,15 @@ export default function HomeScreen({navigation}) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#9bbbd4',
     flex: 1,
   },
   listTitle: {
     fontSize: 22,
+    color: '#556677',
   },
   listDescription: {
     fontSize: 16,
+    color: '#556661',
   },
 });

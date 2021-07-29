@@ -6,8 +6,8 @@ export const AppStyles = {
   primaryColor: '#293462',
   secondaryColor: '#11818a',
   solidColor: '#b5b2b2',
-  textColor: '#fff',
-  titleColor: '#fff',
+  textColor: '#556677',
+  titleColor: '#556677',
   inputTextColor: '#293462',
   colorBackground: '#293462',
 
@@ -21,7 +21,7 @@ export const AppStyles = {
   buttonHeight: 42,
 
   textInputWidth: '80%',
-  textInputBackgroundColor: '#fff',
+  textInputBackgroundColor: '#556677',
   borderRadiusMain: 25,
   borderRadiusSmall: 5,
   width,

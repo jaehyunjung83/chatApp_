@@ -242,6 +242,9 @@ PODS:
   - Firebase/Firestore (7.6.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 7.6.0)
+  - Firebase/Functions (7.6.0):
+    - Firebase/CoreOnly
+    - FirebaseFunctions (~> 7.6.0)
   - Firebase/Messaging (7.6.0):
     - Firebase/CoreOnly
     - FirebaseMessaging (~> 7.6.0)
@@ -280,6 +283,9 @@ PODS:
     - "gRPC-C++ (~> 1.28.0)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 2.30907.0)
+  - FirebaseFunctions (7.6.0):
+    - FirebaseCore (~> 7.0)
+    - GTMSessionFetcher/Core (~> 1.4)
   - FirebaseInstallations (7.11.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
@@ -664,6 +670,10 @@ PODS:
     - Firebase/Firestore (~> 7.6.0)
     - React-Core
     - RNFBApp
+  - RNFBFunctions (10.8.0):
+    - Firebase/Functions (~> 7.6.0)
+    - React-Core
+    - RNFBApp
   - RNFBMessaging (10.8.0):
     - Firebase/Messaging (~> 7.6.0)
     - React-Core
@@ -735,6 +745,7 @@ DEPENDENCIES:
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
+  - "RNFBFunctions (from `../node_modules/@react-native-firebase/functions`)"
   - "RNFBMessaging (from `../node_modules/@react-native-firebase/messaging`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -754,6 +765,7 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseFirestore
+    - FirebaseFunctions
     - FirebaseInstallations
     - FirebaseInstanceID
     - FirebaseMessaging
@@ -844,6 +856,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-firebase/auth"
   RNFBFirestore:
     :path: "../node_modules/@react-native-firebase/firestore"
+  RNFBFunctions:
+    :path: "../node_modules/@react-native-firebase/functions"
   RNFBMessaging:
     :path: "../node_modules/@react-native-firebase/messaging"
   RNGestureHandler:
@@ -871,6 +885,7 @@ SPEC CHECKSUMS:
   FirebaseCore: 0a43b7f1c5b36f3358cd703011ca4c7e0df55870
   FirebaseCoreDiagnostics: 3d36e05da74cb8b7ce30e6594a8f201b982c725c
   FirebaseFirestore: b860346d5095c741528efac94995bab39275d0bf
+  FirebaseFunctions: 03e30a9506b04786917e0de6d8c85cdc260fb2c8
   FirebaseInstallations: a58d4f72ec5861840b84df489f2668d970df558a
   FirebaseInstanceID: ad5135045a498d7775903efd39762d2cdfa1be27
   FirebaseMessaging: 4b9b2850fcfcaac2820097ee3703ba6cfff3df84
@@ -923,6 +938,7 @@ SPEC CHECKSUMS:
   RNFBApp: 97b618641633d6d23187a9d0537c3893482c483f
   RNFBAuth: 7c6c9e7289d98709cd5d1333d829925f81823375
   RNFBFirestore: 859fc78b3dc89ef10e430b39cd9f14e07ef4e158
+  RNFBFunctions: 5309ef8d560a841ab8a298e694290bf8a157306e
   RNFBMessaging: 9eae1103b79d94c6baa5bc43dabc9aba49dfb9da
   RNGestureHandler: 5e58135436aacc1c5d29b75547d3d2b9430d052c
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad

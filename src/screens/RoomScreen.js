@@ -47,7 +47,7 @@ export default function RoomScreen({route}) {
         wrapperStyle={{
           right: {
             // Here is the color change
-            backgroundColor: '#255c99',
+            backgroundColor: '#6646ee',
           },
           left: {
             // Here is the color change
@@ -104,11 +104,11 @@ export default function RoomScreen({route}) {
       onSend={(newMessage) => sendMessageToStore(newMessage)}
       user={{_id: data.userId, name: data.email}}
       renderBubble={renderBubble}
-      placeholder="Type your message here..."
-      showUserAvatar
+      placeholder="..."
+      showUserAvatar={false}
       renderSend={renderSendButton}
-      alwaysShowSend
-      //locale="tr"
+      alwaysShowSend={false}
+      locale="tr"
       scrollToBottom
       scrollToBottomComponent={scrollToBottomIcon}
       renderLoading={loadingComponent}
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   systemMessageWrapper: {
-    backgroundColor: '#6646ee',
+    backgroundColor: '#556677',
     borderRadius: 4,
     padding: 5,
   },

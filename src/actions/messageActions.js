@@ -138,7 +138,6 @@ export const fetchMessages = (room) => {
                 ...firebaseData.user,
               };
             }
-
             return data;
           });
           return dispatch(fetchMessagesSuccess(messages));
