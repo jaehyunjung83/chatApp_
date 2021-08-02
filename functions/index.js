@@ -137,8 +137,8 @@ exports.MessageNotify = functions.firestore
 
     const payLoad = {
       notification: {
-        body: 'Body Push',
-        title: 'Cloud function',
+        body: newValue.user.name,
+        title: newValue.text,
         sound: 'default',
       },
       data: {
