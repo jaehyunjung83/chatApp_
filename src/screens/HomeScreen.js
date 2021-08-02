@@ -1,16 +1,16 @@
-import React, {useEffect} from 'react';
-import {View, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
-import {List, Divider} from 'react-native-paper';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { List, Divider } from 'react-native-paper';
 
-import {useDispatch, useSelector} from 'react-redux';
-import {fetchRooms} from '../actions/roomsActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { firebase } from '@react-native-firebase/functions';
+import { fetchRooms } from '../actions/roomsActions';
 import Loading from '../components/Loading';
-import {firebase} from '@react-native-firebase/functions';
 // import {firebase} from '../config/firebase';
 
-export default function HomeScreen({navigation}) {
+export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
-  const {rooms, loading} = useSelector((state) => state.rooms);
+  const { rooms, loading } = useSelector((state) => state.rooms);
 
   useEffect(() => {
     dispatch(fetchRooms());
@@ -21,18 +21,17 @@ export default function HomeScreen({navigation}) {
     return <Loading />;
   };
 
-  // note the name of our deployed function, 'listProducts', is referenced here:
-
-  const data = firebase.functions().httpsCallable('ListProducts');
-  try {
-    const response = data({
-      page: '1',
-      limit: '10',
-    });
-    console.log(response);
-   } catch (e) {
-    console.error(e);
-   }
+  // functions 결과 받아오기
+  // const data = firebase.functions().httpsCallable('ListProducts');
+  // try {
+  //   const response = data({
+  //     page: '1',
+  //     limit: '10',
+  //   });
+  //   console.log(response);
+  // } catch (e) {
+  //   console.error(e);
+  // }
 
   return (
     <View style={styles.container}>
@@ -43,9 +42,10 @@ export default function HomeScreen({navigation}) {
           data={rooms}
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={() => <Divider />}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate('Room', {room: item})}>
+              onPress={() => navigation.navigate('Room', { room: item })}
+            >
               <List.Item
                 title={item.name}
                 description={item.latestMessage.text}

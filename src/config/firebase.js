@@ -1,12 +1,10 @@
-import {AppRegistry, Platform, Alert} from 'react-native';
+import { AppRegistry, Platform, Alert } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
-
-
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDIWbrZqWmrl-_zCIIZU5esohyQN2zEVl8',
@@ -124,4 +122,4 @@ PushNotification.configure({
   requestPermissions: true,
 });
 
-export {firebaseConfig, firebase, firestore, auth, messaging};
+export { firebaseConfig, firebase, firestore, auth, messaging };
