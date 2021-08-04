@@ -90,9 +90,8 @@ exports.ListProducts = functions.https.onCall((data, context) => {
   return products.slice(startAt, endAt);
 });
 
-
 exports.MessageNotify = functions.firestore
-  .document('/rooms/htijMyIpvJxiYaildS5z/MESSAGES/{documentId}')
+  .document('/rooms/{collectionId}/MESSAGES/{documentId}')
   // .onCreate(async (snapshot, context) => {
   //   if (snapshot.empty) {
   //     console.log('No new Messages');
@@ -127,6 +126,7 @@ exports.MessageNotify = functions.firestore
     // e.g. {'name': 'Marie', 'age': 66}
     const tokens = [
       'fQw7nwfATbmFm6h8c5xEiA:APA91bET7ECcmOfnvdJ_9jTfibA0iw-Xj4qFNqft-FN7VZt0OCQ2U1ovk0dYl5E2t1jVrpYi4v54xA-59Hcr6CH2aCkycNmVpYfn8jqhpU1ti1lZ7iZR8OKId0UeYTTZj8Alcvb6dskT',
+      // 추가 등록가능
     ];
     const newValue = change.after.data();
 
@@ -139,16 +139,19 @@ exports.MessageNotify = functions.firestore
       notification: {
         body: newValue.user.name,
         title: newValue.text,
-        sound: 'default',
+        sound: '3',
       },
       data: {
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
         message: newValue.text,
+        delivered_priority: 'high',
+        type: 'AddRoom',
       },
     };
 
     try {
       const response = await admin.messaging().sendToDevice(tokens, payLoad);
+      console.log('payLoad.data', payLoad.data);
       console.log('Notification Send succesfuully');
       return response;
     } catch (err) {

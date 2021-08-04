@@ -186,9 +186,14 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
-    implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.facebook.react:react-native:+'  // From node_modules
 
     implementation platform('com.google.firebase:firebase-bom:28.3.0')
+
+    // Declare the dependencies for the In-App Messaging and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-inappmessaging-display'
+    implementation 'com.google.firebase:firebase-analytics'
     
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
@@ -197,6 +202,9 @@ dependencies {
     // cannot find symbol import com.google.firebase.iid.FirebaseInstanceId; 에러해결
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-messaging:17.6.0'
+
+    //==>>Compile is not recommended by Android. Use implementation or API.
+    implementation fileTree(dir: "libs", include: ["*.jar"])
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
@@ -222,10 +230,11 @@ dependencies {
 
 // Run this once to be able to run the application with BUCK
 // puts all compile dependencies into folder libs for BUCK to use
-task copyDownloadableDepsToLibs(type: Copy) {
-    from configurations.compile
-    into 'libs'
-}
+//==>>Compile is not recommended by Android. Use implementation or API.
+//task copyDownloadableDepsToLibs(type: Copy) {
+//    from configurations.compile
+//    into 'libs'
+//}
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"

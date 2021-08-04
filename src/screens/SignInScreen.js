@@ -18,6 +18,7 @@ import {loginUser, resetPassword} from '../actions/userActions';
 import ResetPassword from '../components/resetPassword/ResetPassword';
 
 export default function SignUpScreen({navigation}) {
+  
   const {control, handleSubmit, errors, clearErrors, setError} = useForm({
     defaultValues: {email: '', password: '', confirmPassword: ''},
   });

@@ -17,7 +17,8 @@ import {
   setMessageReceived,
 } from '../actions/messageActions';
 
-export default function RoomScreen({route}) {
+export default function ChatingRoomScreen({route}) {
+  
   const {room} = route.params;
   const {data} = useSelector((state) => state.user);
   const {messagesList} = useSelector((state) => state.messages);

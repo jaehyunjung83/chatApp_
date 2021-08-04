@@ -11,6 +11,7 @@ import Loading from '../components/Loading';
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const { rooms, loading } = useSelector((state) => state.rooms);
+  
 
   useEffect(() => {
     dispatch(fetchRooms());

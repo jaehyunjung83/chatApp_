@@ -1,7 +1,10 @@
 {
     "react-native": {
-        "messaging_ios_auto_register_for_remote_messages": false,
-        "messaging_android_headless_task_timeout": 30000
+        "messaging_ios_auto_register_for_remote_messages": true,
+        "messaging_android_headless_task_timeout": 30000,
+        "messaging_android_notification_channel_id": "high-priority",
+        "analytics_auto_collection_enabled": true,
+        "messaging_auto_init_enabled": true
     },
     "functions": {
         "predeploy": [

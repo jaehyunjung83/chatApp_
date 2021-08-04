@@ -7,8 +7,11 @@ import FormInput from '../components/FormInput';
 import FormButton from '../components/FormButton';
 import {createRoom} from '../actions/roomsActions';
 
-export default function AddRoomScreen({navigation}) {
+export default function AddRoomScreen({navigation, route}) {
+  console.log('addroom route', route);
+  console.log('addroom dangerouslyGetState()', navigation.dangerouslyGetState())
   const [roomName, setRoomName] = useState('');
+  
   const dispatch = useDispatch();
 
   const handleButtonPress = () => {
@@ -38,6 +41,12 @@ export default function AddRoomScreen({navigation}) {
           labelStyle={styles.buttonLabel}
           onPress={() => handleButtonPress()}
           disabled={roomName.length === 0}
+        />
+        <IconButton
+          icon="close-circle"
+          size={36}
+          color="#255c99"
+          onPress={() => console.log(navigation.dangerouslyGetState().routes)}
         />
       </View>
     </View>

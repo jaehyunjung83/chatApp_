@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { AppRegistry, Platform, Alert } from 'react-native';
 import firebase from '@react-native-firebase/app';
 import auth from '@react-native-firebase/auth';
@@ -5,6 +6,7 @@ import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
+
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDIWbrZqWmrl-_zCIIZU5esohyQN2zEVl8',
@@ -20,21 +22,28 @@ const firebaseConfig = {
 //firebase.initializeApp(firebaseConfig);
 !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
 
-messaging().onMessage(async (remoteMessage) => {
-  Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
-});
-
-messaging().onNotificationOpenedApp((remoteMessage) => {
-  console.log(
-    'Notification caused app to open from background state:',
-    remoteMessage,
-  );
-  //navigation.navigate(remoteMessage.data.nav);
-});
-
 messaging().setBackgroundMessageHandler(async (remoteMessage) => {
   console.log('Message handled in the background!', remoteMessage);
 });
+
+messaging().onMessage(async (remoteMessage) => {
+  console.log('app열려있을 때 function noti: ', remoteMessage);
+  Alert.alert(
+    'A new FCM message arrived!',
+    JSON.stringify(remoteMessage.notification.title) +
+      '\n' +
+      JSON.stringify(remoteMessage.notification.body),
+  );
+});
+
+
+
+const firebaseNotification = ({route}) => {
+  console.log('firebase route', route)
+
+
+
+
 // messaging()
 //   .getInitialNotification()
 //   .then((res) => console.log('res', res));
@@ -121,5 +130,7 @@ PushNotification.configure({
    */
   requestPermissions: true,
 });
+return null
+}
 
-export { firebaseConfig, firebase, firestore, auth, messaging };
+export { firebaseConfig, firebase, firestore, auth, messaging, firebaseNotification };
