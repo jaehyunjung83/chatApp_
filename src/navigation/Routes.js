@@ -40,7 +40,7 @@ const ChatApp = ({ navigation, route }) => {
   //   navigation.dangerouslyGetState().routes,
   // );
   console.log('route', route);
-  const {rooms} = useSelector((state) => state.rooms);
+  const { rooms } = useSelector((state) => state.rooms);
   useEffect(() => {
     messaging().onNotificationOpenedApp((remoteMessage) => {
       console.log(
@@ -48,7 +48,9 @@ const ChatApp = ({ navigation, route }) => {
         remoteMessage,
       );
 
-      navigation.navigate(remoteMessage.data.type);
+      navigation.navigate(remoteMessage.data.type, {
+        room: {_id: remoteMessage.data.roomid}
+      });
     });
     messaging().onMessage(async (remoteMessage) => {
       console.log('app열려있을 때 function noti: ', remoteMessage);
@@ -60,7 +62,9 @@ const ChatApp = ({ navigation, route }) => {
         [
           {
             text: 'OK',
-            onPress: () => navigation.navigate(remoteMessage.data.type),
+            onPress: () => navigation.navigate(remoteMessage.data.type, {
+              room: {_id: remoteMessage.data.roomid}
+            }),
           },
         ],
         { cancelable: true },

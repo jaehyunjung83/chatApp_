@@ -92,38 +92,10 @@ exports.ListProducts = functions.https.onCall((data, context) => {
 
 exports.MessageNotify = functions.firestore
   .document('/rooms/{collectionId}/MESSAGES/{documentId}')
-  // .onCreate(async (snapshot, context) => {
-  //   if (snapshot.empty) {
-  //     console.log('No new Messages');
-  //     return;
-  //   }
-  //   const tokens = [
-  //     'fQw7nwfATbmFm6h8c5xEiA:APA91bET7ECcmOfnvdJ_9jTfibA0iw-Xj4qFNqft-FN7VZt0OCQ2U1ovk0dYl5E2t1jVrpYi4v54xA-59Hcr6CH2aCkycNmVpYfn8jqhpU1ti1lZ7iZR8OKId0UeYTTZj8Alcvb6dskT',
-  //   ];
-  //   newData = snapshot.data();
-  //   console.log(newData);
-  //   const payLoad = {
-  //     notification: {
-  //       body: 'Body Push',
-  //       title: 'Cloud function',
-  //       sound: 'default',
-  //     },
-  //     data: {
-  //       click_action: 'FLUTTER_NOTIFICATION_CLICK',
-  //       message: newData.message,
-  //     },
-  //   };
-  //   try {
-  //     const response = await admin.messaging().sendToDevice(tokens, payLoad);
-  //     console.log('Notification Send succesfuully');
-  //     return response;
-  //   } catch (err) {
-  //     console.log('Error sending notification');
-  //   }
-  // })
   .onUpdate(async (change, context) => {
     // Get an object representing the document
     // e.g. {'name': 'Marie', 'age': 66}
+
     const tokens = [
       'fQw7nwfATbmFm6h8c5xEiA:APA91bET7ECcmOfnvdJ_9jTfibA0iw-Xj4qFNqft-FN7VZt0OCQ2U1ovk0dYl5E2t1jVrpYi4v54xA-59Hcr6CH2aCkycNmVpYfn8jqhpU1ti1lZ7iZR8OKId0UeYTTZj8Alcvb6dskT',
       // 추가 등록가능
@@ -134,7 +106,7 @@ exports.MessageNotify = functions.firestore
     const previousValue = change.before.data();
     console.log('prev', previousValue);
     console.log('changed', newValue);
-
+    console.log('context', context);
     const payLoad = {
       notification: {
         body: newValue.user.name,
@@ -145,7 +117,8 @@ exports.MessageNotify = functions.firestore
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
         message: newValue.text,
         delivered_priority: 'high',
-        type: 'AddRoom',
+        type: 'Room',
+        roomid: context.params.collectionId,
       },
     };
 
