@@ -8,14 +8,14 @@ import FormButton from '../components/FormButton';
 import {createRoom} from '../actions/roomsActions';
 
 export default function AddRoomScreen({navigation, route}) {
-  console.log('addroom route', route);
+  console.table(route);
   console.log('addroom dangerouslyGetState()', navigation.dangerouslyGetState())
   const [roomName, setRoomName] = useState('');
   
   const dispatch = useDispatch();
 
   const handleButtonPress = () => {
-    dispatch(createRoom(roomName, navigation));
+    dispatch(createRoom(roomName, navigation, route));
   };
   return (
     <View style={styles.rootContainer}>

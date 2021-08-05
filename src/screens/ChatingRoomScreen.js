@@ -18,7 +18,7 @@ import {
 } from '../actions/messageActions';
 
 export default function ChatingRoomScreen({route}) {
-  
+  console.table(route.params)
   const {room} = route.params;
   const {data} = useSelector((state) => state.user);
   const {messagesList} = useSelector((state) => state.messages);

@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { AppRegistry, Platform, Alert } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,7 +20,7 @@ const ChatAppStack = createStackNavigator();
 const Login = createStackNavigator();
 const ModalStack = createStackNavigator();
 
-const LoginStack = () => {
+const LoginStack = ({ navigation }) => {
   return (
     <Login.Navigator
       headerMode="none"
@@ -33,19 +34,39 @@ const LoginStack = () => {
   );
 };
 
-const ChatApp = ({navigation, route}) => {
-  console.log('dangerouslyGetState().routes', navigation.dangerouslyGetState().routes)
-console.log('route', route)
-  
-useEffect(()=> {
-messaging().onNotificationOpenedApp((remoteMessage) => {
-  console.log(
-    'Notification caused app to open from background state:',
-    remoteMessage,
-  );
-  navigation.navigate(remoteMessage.data.type);
-});
-},[]);
+const ChatApp = ({ navigation, route }) => {
+  // console.log(
+  //   'dangerouslyGetState().routes',
+  //   navigation.dangerouslyGetState().routes,
+  // );
+  console.log('route', route);
+  const {rooms} = useSelector((state) => state.rooms);
+  useEffect(() => {
+    messaging().onNotificationOpenedApp((remoteMessage) => {
+      console.log(
+        'Notification caused app to open from background state:',
+        remoteMessage,
+      );
+
+      navigation.navigate(remoteMessage.data.type);
+    });
+    messaging().onMessage(async (remoteMessage) => {
+      console.log('app열려있을 때 function noti: ', remoteMessage);
+      Alert.alert(
+        'A new FCM message arrived!',
+        JSON.stringify(remoteMessage.notification.title) +
+          '\n' +
+          JSON.stringify(remoteMessage.notification.body),
+        [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate(remoteMessage.data.type),
+          },
+        ],
+        { cancelable: true },
+      );
+    });
+  }, []);
 
   return (
     <ChatAppStack.Navigator
@@ -69,16 +90,31 @@ messaging().onNotificationOpenedApp((remoteMessage) => {
               icon="message-plus"
               size={AppStyles.iconSize}
               color={AppStyles.textColor}
-              onPress={() => navigation.navigate('AddRoom') + console.log(navigation.dangerouslyGetState().routes)}
+              onPress={() =>
+                navigation.navigate('AddRoom') +
+                console.log(navigation.dangerouslyGetState().routes)
+              }
             />
           ),
+          // headerLeft: () => (
+          //   <IconButton
+          //     icon="message-plus"
+          //     size={AppStyles.iconSize}
+          //     color={AppStyles.textColor}
+          //     onPress={() =>
+          //       navigation.navigate('Room', { room: rooms[0] }) +
+          //       console.log(navigation.dangerouslyGetState().routes)
+          //     }
+          //   />
+          // ),
         })}
       />
       <ChatAppStack.Screen
         name="Room"
         component={ChatingRoomScreen}
-        options={({ route }) => ({
-          title: route.params.room.name,
+        options={({ route, navigation }) => ({
+          title: route.params.room._id,
+          // onPress: ()=>console.log(navigation.dangerouslyGetState().routes),
         })}
       />
 
@@ -90,7 +126,6 @@ messaging().onNotificationOpenedApp((remoteMessage) => {
   );
 };
 const HomeStack = () => {
-  
   return (
     <ModalStack.Navigator
       mode="modal"
@@ -101,17 +136,19 @@ const HomeStack = () => {
     >
       <ModalStack.Screen name="ChatApp" component={ChatApp} />
       <ModalStack.Screen name="AddRoom" component={AddRoomScreen} />
-      
     </ModalStack.Navigator>
   );
 };
 
 export default function Routes() {
   const { data, login, loading } = useSelector((state) => state.user);
+  // console.log(useSelector((state) => state.user.login));
   const dispatch = useDispatch();
   // 메시지 수신 시 원하는 페이지로 navigation.navigate하려면 stack에 등록 후 navi ref에 저장해주면 100% 됨
   const navigationRef = useRef(null);
   (remoteMessage) => navigationRef.current.navigate(remoteMessage.data.type);
+  // console.table(navigationRef);
+
   useEffect(() => {
     dispatch(authUser());
   }, []);
@@ -120,4 +157,4 @@ export default function Routes() {
       {loading ? <Loading /> : login ? <HomeStack /> : <LoginStack />}
     </NavigationContainer>
   );
-};
+}

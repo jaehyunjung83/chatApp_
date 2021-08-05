@@ -1,4 +1,6 @@
 import {firestore, auth} from '../config/firebase';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 export const setRef = () => {
   let senderUserId = auth().currentUser();
@@ -67,27 +69,33 @@ export const fetchRooms = () => {
   };
 };
 
-export const createRoom = (roomName, navigation) => {
+export const createRoom = (roomName, navigation, route) => {
+  
   return async (dispatch) => {
     dispatch(createRoomInit());
+    
     try {
       if (roomName.length > 0) {
         firestore()
           .collection('rooms')
           .add({
             name: roomName,
+            routeparams: route.params,
             latestMessage: {
               text: `You have joined the room ${roomName}.`,
               createdAt: new Date().getTime(),
             },
           })
           .then((docRef) => {
+            console.table(route)
             docRef.collection('MESSAGES').add({
               text: `You have joined the room ${roomName}.`,
               createdAt: new Date().getTime(),
               system: true,
             });
+            console.log('docRef', docRef);
             navigation.navigate('Home');
+            navigation.navigate('Room', { room: docRef });
             return dispatch(createRoomSuccess());
           });
       }

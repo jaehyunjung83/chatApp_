@@ -113,6 +113,7 @@ export const sendMessage = (room, text) => {
 };
 
 export const fetchMessages = (room) => {
+  console.log(room)
   return async (dispatch, getState) => {
     dispatch(fetchMessagesInit());
 

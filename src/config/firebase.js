@@ -26,15 +26,7 @@ messaging().setBackgroundMessageHandler(async (remoteMessage) => {
   console.log('Message handled in the background!', remoteMessage);
 });
 
-messaging().onMessage(async (remoteMessage) => {
-  console.log('app열려있을 때 function noti: ', remoteMessage);
-  Alert.alert(
-    'A new FCM message arrived!',
-    JSON.stringify(remoteMessage.notification.title) +
-      '\n' +
-      JSON.stringify(remoteMessage.notification.body),
-  );
-});
+
 
 
 
