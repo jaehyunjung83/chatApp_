@@ -1,6 +1,7 @@
-import {firestore, auth} from '../config/firebase';
+import React, { useEffect } from 'react';
+import { firestore, auth } from '../config/firebase';
 import { useDispatch, useSelector } from 'react-redux';
-
+import ChatingRoomScreen from '../screens/ChatingRoomScreen.js';
 
 export const setRef = () => {
   let senderUserId = auth().currentUser();
@@ -70,10 +71,9 @@ export const fetchRooms = () => {
 };
 
 export const createRoom = (roomName, navigation, route) => {
-  
   return async (dispatch) => {
     dispatch(createRoomInit());
-    
+
     try {
       if (roomName.length > 0) {
         firestore()
@@ -87,16 +87,29 @@ export const createRoom = (roomName, navigation, route) => {
             },
           })
           .then((docRef) => {
-            console.table(route)
+            console.table(route);
             docRef.collection('MESSAGES').add({
               text: `You have joined the room ${roomName}.`,
               createdAt: new Date().getTime(),
               system: true,
             });
-            console.log('docRef', docRef);
-            navigation.navigate('Home');
-            navigation.navigate('Room', { room: docRef });
-            return dispatch(createRoomSuccess());
+            console.log('docRef.id', docRef.id);
+            // navigation.navigate('Home');
+            navigation.navigate('Room', {
+              room: {
+                _id: docRef.id,
+                name: roomName,
+                latestMessage: {
+                  text: `You have joined the room ${roomName}.`,
+                  createdAt: new Date().getTime(),
+                },
+              },
+            });
+            return (
+              dispatch(createRoomSuccess()) +
+              dispatch(fetchRooms()) +
+              <ChatingRoomScreen />
+            );
           });
       }
     } catch (error) {
