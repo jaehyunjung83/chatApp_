@@ -119,6 +119,7 @@ exports.MessageNotify = functions.firestore
         delivered_priority: 'high',
         type: 'Room',
         roomid: context.params.collectionId,
+        messageid: context.params.documentId,
       },
     };
 

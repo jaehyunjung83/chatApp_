@@ -1,14 +1,14 @@
 // eslint-disable-next-line no-unused-vars
-import React, {useEffect} from 'react';
-import {View, StyleSheet, ActivityIndicator} from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import {
   GiftedChat,
   Bubble,
   Send,
   SystemMessage,
 } from 'react-native-gifted-chat';
-import {IconButton} from 'react-native-paper';
-import {useSelector, useDispatch} from 'react-redux';
+import { IconButton } from 'react-native-paper';
+import { useSelector, useDispatch } from 'react-redux';
 //import 'dayjs/locale/tr';
 
 import {
@@ -17,13 +17,21 @@ import {
   setMessageReceived,
 } from '../actions/messageActions';
 
-export default function ChatingRoomScreen({route}) {
-  console.table(route)
-  const {room} = route.params;
-  const {data} = useSelector((state) => state.user);
-  const {messagesList} = useSelector((state) => state.messages);
+export default function ChatingRoomScreen({ route }) {
+  console.table(route);
+  const { room } = route.params;
+  const { notifiedmessageid } = route.params.notifiedmessage;
+  const { data } = useSelector((state) => state.user);
+  const { messagesList } = useSelector((state) => state.messages);
   const dispatch = useDispatch();
 
+  console.log(route.params);
+  console.log(room);
+  console.log(messagesList);
+  console.log(notifiedmessageid)
+  const notifiedmessage = messagesList.findIndex(e=>e._id == notifiedmessageid);
+  console.log("🚀 ~ file: ChatingRoomScreen.js ~ line 33 ~ ChatingRoomScreen ~ notifiedmessage", notifiedmessage)
+  
   useEffect(() => {
     dispatch(fetchMessages(room));
     //firebase.auth().signOut();
@@ -80,7 +88,6 @@ export default function ChatingRoomScreen({route}) {
   const sendMessageToStore = (newMessage) => {
     dispatch(sendMessage(room, newMessage[0].text));
   };
-
   const scrollToBottomIcon = () => {
     return (
       <View style={styles.scrollToIconStyles}>
@@ -99,11 +106,23 @@ export default function ChatingRoomScreen({route}) {
     );
   };
 
+    setTimeout(() => {
+      instance._messageContainerRef.current.scrollToIndex({index: notifiedmessage, viewOffset: 0, viewPosition: 0, animated : true});
+  }, 100);
+
   return (
     <GiftedChat
+      ref={(c) => {
+        instance = c;
+      }}
+      // onScrollToIndexFailed={notifiedmessage => {
+      //   const wait = new Promise(resolve => setTimeout(resolve, 300));
+      //   wait.then(() => {
+      //     instance._messageContainerRef.current.scrollToIndex({index: notifiedmessage, viewOffset: 0, viewPosition: 1});
+      // }, 300)}}
       messages={messagesList}
       onSend={(newMessage) => sendMessageToStore(newMessage)}
-      user={{_id: data.userId, name: data.email}}
+      user={{ _id: data.userId, name: data.email }}
       renderBubble={renderBubble}
       placeholder="..."
       showUserAvatar={false}

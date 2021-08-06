@@ -34,14 +34,15 @@ const LoginStack = ({ navigation }) => {
   );
 };
 
-const ChatApp = ({ navigation, route }) => {
+const ChatApp = ({ navigation, route, remoteMessage }) => {
   // console.log(
   //   'dangerouslyGetState().routes',
   //   navigation.dangerouslyGetState().routes,
   // );
-  console.log('route', route);
   const { rooms } = useSelector((state) => state.rooms);
+  
   useEffect(() => {
+    console.log('route', route);
     messaging().onNotificationOpenedApp((remoteMessage) => {
       console.log(
         'Notification caused app to open from background state:',
@@ -49,9 +50,14 @@ const ChatApp = ({ navigation, route }) => {
       );
 
       navigation.navigate(remoteMessage.data.type, {
-        room: {_id: remoteMessage.data.roomid}
+        room: {
+          _id: remoteMessage.data.roomid,
+          // messageid: remoteMessage.data.messageid,
+        },
       });
     });
+  },[]);
+  useEffect((remoteMessage) => {
     messaging().onMessage(async (remoteMessage) => {
       console.log('app열려있을 때 function noti: ', remoteMessage);
       Alert.alert(
@@ -62,15 +68,22 @@ const ChatApp = ({ navigation, route }) => {
         [
           {
             text: 'OK',
-            onPress: () => navigation.navigate(remoteMessage.data.type, {
-              room: {_id: remoteMessage.data.roomid}
-            }),
+            onPress: (route) =>
+              navigation.navigate(remoteMessage.data.type, {
+                room: {
+                  _id: remoteMessage.data.roomid,
+                  // messageid: remoteMessage.data.messageid,
+                },
+                notifiedmessage: {
+                  notifiedmessageid: remoteMessage.data.messageid,
+                },
+              }),
           },
         ],
         { cancelable: true },
       );
     });
-  }, []);
+  },[]);
 
   return (
     <ChatAppStack.Navigator
@@ -150,7 +163,7 @@ export default function Routes() {
   const dispatch = useDispatch();
   // 메시지 수신 시 원하는 페이지로 navigation.navigate하려면 stack에 등록 후 navi ref에 저장해주면 100% 됨
   const navigationRef = useRef(null);
-  (remoteMessage) => navigationRef.current.navigate(remoteMessage.data.type);
+  // (remoteMessage) => navigationRef.current.navigate(remoteMessage.data.type);
   // console.table(navigationRef);
 
   useEffect(() => {

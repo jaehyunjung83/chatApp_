@@ -48,13 +48,15 @@ export const setMessageReceivedFail = (error) => ({
   payload: error,
 });
 
+// 받은 메시지 중 상대방이 보낸 메시지 received 처리
+// recieved처리할게 없으면 success도출 안 하고 그냥 init에서 끝남
 export const setMessageReceived = (room) => {
   return async (dispatch, getState) => {
     dispatch(setMessageReceivedInit());
     const {
       messages: {messagesList},
       user: {
-        data: {userId},
+        data: {userId}, //내 id
       },
     } = getState();
     messagesList.map((message) => {
@@ -142,7 +144,7 @@ export const fetchMessages = (room) => {
             return data;
           });
           return dispatch(fetchMessagesSuccess(messages));
-          //setMessages(messages);
+          setMessages(messages);
         });
     } catch (error) {
       return dispatch(fetchMessagesFail(error));
