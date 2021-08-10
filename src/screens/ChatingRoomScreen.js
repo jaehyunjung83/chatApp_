@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import {
   GiftedChat,
@@ -20,18 +20,37 @@ import {
 export default function ChatingRoomScreen({ route }) {
   console.table(route);
   const { room } = route.params;
-  const { notifiedmessageid } = route.params.notifiedmessage;
+
+  const notifiedmessageid = [];
+  if (route.params.notifiedmessage != undefined) {
+    notifiedmessageid.push(route.params.notifiedmessage.notifiedmessageid);
+  }
   const { data } = useSelector((state) => state.user);
   const { messagesList } = useSelector((state) => state.messages);
   const dispatch = useDispatch();
 
+  const giftedChatRef = useRef();
+  console.log(
+    '🚀 ~ file: ChatingRoomScreen.js ~ line 33 ~ ChatingRoomScreen ~ giftedChatRef',
+    giftedChatRef,
+  );
+  // console.log("🚀 ~ file: ChatingRoomScreen.js ~ line 33 ~ ChatingRoomScreen ~ giftedChatRef", giftedChatRef)
+
+  // setTimeout(() => {
+  //   // giftedChatRef?.current?._messageContainerRef?.current?.scrollToEnd();
+  //   giftedChatRef?.current?._messageContainerRef?.current?.scrollToItem({
+  //     animated: true,
+  //     item: messages[messages.length - 1],
+  //     viewPosition: 1,
+  //   });
+  // }, 700);
+
   console.log(route.params);
   console.log(room);
   console.log(messagesList);
-  console.log(notifiedmessageid)
-  const notifiedmessage = messagesList.findIndex(e=>e._id == notifiedmessageid);
-  console.log("🚀 ~ file: ChatingRoomScreen.js ~ line 33 ~ ChatingRoomScreen ~ notifiedmessage", notifiedmessage)
-  
+  if (route.params.notifiedmessage != undefined) {
+    console.log(notifiedmessageid);
+  }
   useEffect(() => {
     dispatch(fetchMessages(room));
     //firebase.auth().signOut();
@@ -41,6 +60,17 @@ export default function ChatingRoomScreen({ route }) {
     dispatch(setMessageReceived(room));
   }, [messagesList]);
 
+  const [notimsgidx, setNotiMsgIdx] = useState('0');
+
+  if (route.params.notifiedmessage != undefined) {
+    useEffect(() => {
+      setNotiMsgIdx(messagesList.findIndex((e) => e._id == notifiedmessageid));
+    }, [messagesList]);
+    console.log(
+      '🚀 ~ file: ChatingRoomScreen.js ~ line 37 ~ ChatingRoomScreen ~ notimsgidx',
+      notimsgidx,
+    );
+  }
   const loadingComponent = () => {
     return (
       <View style={styles.loadingStyles}>
@@ -56,7 +86,7 @@ export default function ChatingRoomScreen({ route }) {
         wrapperStyle={{
           right: {
             // Here is the color change
-            backgroundColor: '#6646ee',
+            backgroundColor: 'slategray',
           },
           left: {
             // Here is the color change
@@ -88,6 +118,7 @@ export default function ChatingRoomScreen({ route }) {
   const sendMessageToStore = (newMessage) => {
     dispatch(sendMessage(room, newMessage[0].text));
   };
+
   const scrollToBottomIcon = () => {
     return (
       <View style={styles.scrollToIconStyles}>
@@ -106,20 +137,44 @@ export default function ChatingRoomScreen({ route }) {
     );
   };
 
-    setTimeout(() => {
-      instance._messageContainerRef.current.scrollToIndex({index: notifiedmessage, viewOffset: 0, viewPosition: 0, animated : true});
-  }, 100);
+  // function onScrollToIndexFailed(notimsgidx) {
+  //   console.log('scrollfailed');
+  //   const wait = new Promise((resolve) => setTimeout(resolve, 100));
+  //   wait.then((instance) => {
+  //     if (notimsgidx !== -1) {
+  //       instance._messageContainerRef.current.scrollToIndex({
+  //         index: notimsgidx,
+  //         viewOffset: 0,
+  //         viewPosition: 1,
+  //       });
+  //     }
+  //     else null;
+  //   });
+  // }
+  // useEffect(() => {
+  //   instance._messageContainerRef.current._listRef._frames;
+  // },[]);
+  (ref) => {
+    if (ref != undefined) {
+      ref._messageContainerRef.current._listRef._frames.scrollTo({offset:100})
+    }
+    else {
+      ref._messageContainerRef.current.scrollToBottom()
+    }
+  };
+  
 
   return (
     <GiftedChat
-      ref={(c) => {
-        instance = c;
+      ref={(ref) => {
+        // instance = ref;
+        // console.table('instance', instance);
+
+        ref;
+        console.log('ref', ref);
+        
       }}
-      // onScrollToIndexFailed={notifiedmessage => {
-      //   const wait = new Promise(resolve => setTimeout(resolve, 300));
-      //   wait.then(() => {
-      //     instance._messageContainerRef.current.scrollToIndex({index: notifiedmessage, viewOffset: 0, viewPosition: 1});
-      // }, 300)}}
+      // onScrollToIndexFailed={onScrollToIndexFailed}
       messages={messagesList}
       onSend={(newMessage) => sendMessageToStore(newMessage)}
       user={{ _id: data.userId, name: data.email }}
