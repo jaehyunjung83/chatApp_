@@ -60,5 +60,12 @@ Don't forget [Create a Firebase project](https://console.firebase.google.com) an
 - [React Native’de WebSocket kullanılarak bir chat uygulaması nasıl yapılır?](https://zaferayan.medium.com/react-nativede-websocket-kullan%C4%B1larak-bir-chat-uygulamas%C4%B1-nas%C4%B1l-yap%C4%B1l%C4%B1r-c2597fa5cd8e)
 
 ## ERRORS
+- [!] CocoaPods could not find compatible versions for pod "react-native-document-picker":
+  In Podfile:
+    react-native-document-picker (from `../node_modules/react-native-document-picker`)
+
+Specs satisfying the `react-native-document-picker (from `../node_modules/react-native-document-picker`)` dependency were found, but they required a higher minimum deployment target.
+
+Answer]
 https://github.com/rnmods/react-native-document-picker/issues/313#issuecomment-802975839
 
