@@ -59,6 +59,6 @@ Don't forget [Create a Firebase project](https://console.firebase.google.com) an
 - [React Native’de Firebase ile Push Notification Gönderimi Nasıl Yapılır?](https://zaferayan.medium.com/react-nativede-firebase-ile-push-notification-g%C3%B6nderimi-8547f3b07ece)
 - [React Native’de WebSocket kullanılarak bir chat uygulaması nasıl yapılır?](https://zaferayan.medium.com/react-nativede-websocket-kullan%C4%B1larak-bir-chat-uygulamas%C4%B1-nas%C4%B1l-yap%C4%B1l%C4%B1r-c2597fa5cd8e)
 
-## Contribute
+## ERRORS
+https://github.com/rnmods/react-native-document-picker/issues/313#issuecomment-802975839
 
-Contributions are always welcome!
