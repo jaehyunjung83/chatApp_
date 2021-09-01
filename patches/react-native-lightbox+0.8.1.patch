@@ -1,0 +1,13 @@
+diff --git a/node_modules/react-native-lightbox/LightboxOverlay.js b/node_modules/react-native-lightbox/LightboxOverlay.js
+index 9e01f9a..0935c50 100644
+--- a/node_modules/react-native-lightbox/LightboxOverlay.js
++++ b/node_modules/react-native-lightbox/LightboxOverlay.js
+@@ -99,7 +99,7 @@ export default class LightboxOverlay extends Component {
+       onPanResponderMove: Animated.event([
+         null,
+         { dy: this.state.pan }
+-      ]),
++      ], {useNativeDriver: false}),
+       onPanResponderTerminationRequest: (evt, gestureState) => true,
+       onPanResponderRelease: (evt, gestureState) => {
+         if(Math.abs(gestureState.dy) > DRAG_DISMISS_THRESHOLD) {

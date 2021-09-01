@@ -74,19 +74,24 @@ export const setMessageReceived = (room) => {
   };
 };
 
-export const sendMessage = (room, text) => {
+export const sendMessage = (room, text, uri) => {
+  console.log('sendmessage action text',text)
   return async (dispatch, getState) => {
     dispatch(sendMessageInit());
     const {
       user: {data},
     } = getState();
     try {
+      console.log('multipleFile[0].uri', uri)
       await firestore()
         .collection('rooms')
         .doc(room._id)
         .collection('MESSAGES')
-        .add({
-          text,
+        .add(
+          uri? 
+          {
+          text: text,
+          fileuri: uri,
           createdAt: new Date().getTime(),
           user: {
             _id: data.userId,
@@ -94,7 +99,18 @@ export const sendMessage = (room, text) => {
           },
           sent: true,
           received: false,
-        });
+        } : 
+        {
+          text: text,
+          createdAt: new Date().getTime(),
+          user: {
+            _id: data.userId,
+            name: data.email,
+          },
+          sent: true,
+          received: false,
+        }
+        );
       await firestore()
         .collection('rooms')
         .doc(room._id)
@@ -115,7 +131,7 @@ export const sendMessage = (room, text) => {
 };
 
 export const fetchMessages = (room) => {
-  console.log(room)
+  
   return async (dispatch, getState) => {
     dispatch(fetchMessagesInit());
 
@@ -128,14 +144,14 @@ export const fetchMessages = (room) => {
         .onSnapshot((querySnapshot) => {
           const messages = querySnapshot.docs.map((doc) => {
             const firebaseData = doc.data();
-
+            
             const data = {
               _id: doc.id,
               text: '',
               createdAt: new Date().getTime(),
               ...firebaseData,
             };
-
+            
             if (!firebaseData.system) {
               data.user = {
                 ...firebaseData.user,

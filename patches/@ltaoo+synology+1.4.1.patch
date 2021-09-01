@@ -1,0 +1,10 @@
+diff --git a/node_modules/@ltaoo/synology/index.js b/node_modules/@ltaoo/synology/index.js
+index 117023e..bda2df8 100644
+--- a/node_modules/@ltaoo/synology/index.js
++++ b/node_modules/@ltaoo/synology/index.js
+@@ -1,3 +1,5 @@
++// patch수정!!!
++
+ require('dotenv').config({
+     path: '.env',
+     // overwrite: true,

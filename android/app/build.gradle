@@ -200,8 +200,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
 
     // cannot find symbol import com.google.firebase.iid.FirebaseInstanceId; 에러해결
-    implementation 'com.google.firebase:firebase-core:16.0.3'
+//    implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-messaging:17.6.0'
+    implementation project(path: ":@react-native-firebase_storage")
+
+    implementation project(':react-native-fs')
+
+    implementation project(':react-native-randombytes')
 
     //==>>Compile is not recommended by Android. Use implementation or API.
     implementation fileTree(dir: "libs", include: ["*.jar"])

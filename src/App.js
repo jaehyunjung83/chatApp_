@@ -1,3 +1,4 @@
+
 import React, {useEffect} from 'react';
 import {Provider} from 'react-redux';
 import {Provider as PaperProvider} from 'react-native-paper';
