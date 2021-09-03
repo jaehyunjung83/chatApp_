@@ -176,3 +176,6 @@ npx patch-package package-name
 where package-name matches the name of the package you made changes to.
 
 If this is the first time you've used patch-package, it will create a folder called patches in the root dir of your app. Inside will be a file called package-name+0.44.0.patch or something, which is a diff between normal old package-name and your fixed version. Commit this to share the fix with your team.
+
+
+1
