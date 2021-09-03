@@ -6,6 +6,9 @@ import android.os.Build;
 
 import com.facebook.react.ReactActivity;
 
+import android.content.Intent;
+
+
 public class MainActivity extends ReactActivity {
 
   /**

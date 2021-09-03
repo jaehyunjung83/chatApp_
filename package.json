@@ -13,10 +13,9 @@
     "dependencies": {
         "@ltaoo/synology": "1.4.1",
         "@react-native-community/cli-platform-android": "3.0.3",
-        "@react-native-community/masked-view": "^0.1.10",
         "@react-native-community/push-notification-ios": "^1.8.0",
         "@react-native-firebase/analytics": "10.8.0",
-        "@react-native-firebase/app": "^10.8.0",
+        "@react-native-firebase/app": "10.8.0",
         "@react-native-firebase/auth": "^10.8.0",
         "@react-native-firebase/firestore": "^10.8.0",
         "@react-native-firebase/functions": "10.8.0",

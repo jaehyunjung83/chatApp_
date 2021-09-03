@@ -59,13 +59,72 @@ Don't forget [Create a Firebase project](https://console.firebase.google.com) an
 - [React Native’de Firebase ile Push Notification Gönderimi Nasıl Yapılır?](https://zaferayan.medium.com/react-nativede-firebase-ile-push-notification-g%C3%B6nderimi-8547f3b07ece)
 - [React Native’de WebSocket kullanılarak bir chat uygulaması nasıl yapılır?](https://zaferayan.medium.com/react-nativede-websocket-kullan%C4%B1larak-bir-chat-uygulamas%C4%B1-nas%C4%B1l-yap%C4%B1l%C4%B1r-c2597fa5cd8e)
 
-## ERRORS
+# ERRORS
+##  Document-picker Error
+```
 - [!] CocoaPods could not find compatible versions for pod "react-native-document-picker":
   In Podfile:
     react-native-document-picker (from `../node_modules/react-native-document-picker`)
-
+```
 Specs satisfying the `react-native-document-picker (from `../node_modules/react-native-document-picker`)` dependency were found, but they required a higher minimum deployment target.
 
 Answer]
 https://github.com/rnmods/react-native-document-picker/issues/313#issuecomment-802975839
 
+
+## java compile Error
+> Task :@react-native-firebase_app:compileDebugJavaWithJavac FAILED
+```
+> Task :@react-native-firebase_app:compileDebugJavaWithJavac FAILED
+15 actionable tasks: 1 executed, 14 up-to-date
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':@react-native-firebase_app:compileDebugJavaWithJavac'.
+> java.lang.IllegalAccessError: class org.gradle.internal.compiler.java.ClassNameCollector (in unnamed module @0x4cf82a85) cannot access class com.sun.tools.javac.code.Symbol$TypeSymbol (in module jdk.compiler) because module jdk.compiler does not export com.sun.tools.javac.code to unnamed module @0x4cf82a85
+```
+#### java version이 호환이 안 되서 compile을 못하는 것임!
+java16 version으로 되어있었는데 gradle 7.0.2 version하고 호환이 잘 안되서
+java11 version(이게 젤 호환이 잘 되고 안정적이라고 함)으로 바꿔야 했음!!!
+
+1. 자바 버전확인
+   `java -version`
+   ```
+   (base) jjh@MacBook-Pro-3 ~ % java -version
+    openjdk version "16.0.2" 2021-07-20
+    OpenJDK Runtime Environment (build 16.0.2+7-67)
+    OpenJDK 64-Bit Server VM (build 16.0.2+7-67, mixed mode, sharing)
+    ```
+    or `/usr/libexec/java_home -V`
+    ```
+    Matching Java Virtual Machines (3):
+    16.0.2 (x86_64) "Oracle Corporation" - "OpenJDK 16.0.2" /Users/jjh/Library/Java/JavaVirtualMachines/openjdk-16.0.2/Contents/Home
+    11.0.11 (x86_64) "AdoptOpenJDK" - "AdoptOpenJDK 11" /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home
+    1.8.301.09 (x86_64) "Oracle Corporation" - "Java" /Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home
+    /Users/jjh/Library/Java/JavaVirtualMachines/openjdk-16.0.2/Contents/Home
+    ```
+
+2. 자바 버전 11로 바꿈
+
+    `export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home`
+
+    or 
+
+    `/Users/jjh/.bash_profile`의 `export JAVA_HOME=`을 
+
+    `export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home` 
+    
+    로 바꾸고 
+    
+    `source .bash_profile` or `/usr/libexec/java_home -V`
+
+3. 그래도 안 바뀌었다면? java16을 sudo권한으로 rm -rf 로 폴더 직접 삭제 해야 함(휴지통도)
+
+    `sudo rm -rf /Users/jjh/Library/Java/JavaVirtualMachines/openjdk-16.0.2/Contents/Home`
+
+    그냥 폴더만 삭제했으면 finder에는 안 보이는데 
+
+    `/usr/libexec/java_home -V`
+    
+    로 검색 시 계속 설치되어 남아있을 수 있음!!!
