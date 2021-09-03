@@ -177,6 +177,17 @@ where package-name matches the name of the package you made changes to.
 
 If this is the first time you've used patch-package, it will create a folder called patches in the root dir of your app. Inside will be a file called package-name+0.44.0.patch or something, which is a diff between normal old package-name and your fixed version. Commit this to share the fix with your team.
 
+#   ngrok
 
-1
-2
+synology 포트포워딩 및 방화벽 예외 허용 필요
+
+최초 local에 authtoken 등록하기
+
+```
+ngrok authtoken 1xX2YQ18j7AAoRAjE7QVttJ2cFo_6APtpbgLFck2DCQSvG6YH
+```
+
+이후 localhost에 ngrok 적용하기
+```
+ngrok http 3000 (ExpressServer에 지정하고 synology에 포트포워딩, 방화벽 허용한 포트)
+```

@@ -360,7 +360,7 @@ export default function ChatingRoomScreen({ route }) {
 
       const url =
       //  `https://re-ply.r-e.kr:5001/webapi/entry.cgi?api=SYNO.FileStation.Upload&method=upload&version=2&_sid=${synosid}`;
-      'http://3351-218-153-215-206.ngrok.io/rn-upload-multi';
+      'http://94de-218-153-215-206.ngrok.io/rn-upload-multi';
 
       // const [, type] = name.split('.');
 
@@ -437,7 +437,11 @@ export default function ChatingRoomScreen({ route }) {
       var data = new FormData();
       // data.append('overwrite', 'false');
       // data.append('path', '/home/Drive');
-      data.append('file', multipleFile[0]);
+      for (let i=0; i < multipleFile.length;i++) {
+        data.append('file', multipleFile[i]);
+          };
+      console.log("🚀 ~ file: ChatingRoomScreen.js ~ line 448 ~ //returnnewPromise ~ data", data)
+  
 
       var config = {
         method: 'post',
