@@ -72,6 +72,17 @@ Answer]
 https://github.com/rnmods/react-native-document-picker/issues/313#issuecomment-802975839
 
 
+> Rollback to 3.4.0 version: `yarn add react-native-document-picker@3.4.0`
+ 
+> Reinstall pods: `cd ios && pod deintegrate && pod install --repo-update`
+
+> Update to version 3.5.1: `yarn add react-native-document-picker`
+
+> Update pods without deintegrate: `cd ios && pod install --repo-update`
+
+It works for me, thanks!
+
+
 ## java compile Error
 > Task :@react-native-firebase_app:compileDebugJavaWithJavac FAILED
 ```
@@ -128,3 +139,40 @@ java11 version(이게 젤 호환이 잘 되고 안정적이라고 함)으로 바
     `/usr/libexec/java_home -V`
     
     로 검색 시 계속 설치되어 남아있을 수 있음!!!
+
+
+## rn-masked-view는 에러나서 지웠다가(안쓰는 모듈인 거 같애서) java version 수정하고 다시 빌드하니까 계속 있는 거로 나와서 그냥 다시 설치함
+
+##  patch-package(node_modules 직접 수정 후 patch폴더에 수정 사항 남김)
+
+### Set-up
+
+In package.json
+```
+ "scripts": {
++  "postinstall": "patch-package"
+ }
+```
+Then
+
+**npm**
+```
+npm i patch-package
+```
+
+You can use --save-dev if you don't need to run npm in production, e.g. if you're making a web frontend.
+
+### Usage
+
+Making patches
+First make changes to the files of a particular package in your node_modules folder, then run
+
+use npx (included with npm > 5.2)
+
+```
+npx patch-package package-name
+```
+
+where package-name matches the name of the package you made changes to.
+
+If this is the first time you've used patch-package, it will create a folder called patches in the root dir of your app. Inside will be a file called package-name+0.44.0.patch or something, which is a diff between normal old package-name and your fixed version. Commit this to share the fix with your team.
