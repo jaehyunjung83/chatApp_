@@ -26,6 +26,7 @@ import {
   setMessageReceived,
 } from '../actions/messageActions';
 import DocumentPicker from 'react-native-document-picker';
+import Toast from 'react-native-toast-message';
 import { launchCamera, launchImageLibrary, ImagePicker } from 'react-native-image-picker';
 // import Synology from '@ltaoo/synology';
 import { Buffer } from 'buffer';
@@ -196,11 +197,21 @@ export default function ChatingRoomScreen({ route }) {
       const res = await DocumentPicker.pickMultiple({
         type: [DocumentPicker.types.allFiles],
       });
-
       console.table('ducupick', res);
-
-
       setMultipleFile(res);
+      if (res.type = 'video/*') {
+        Toast.show({
+          type: 'error',
+          position: 'bottom',
+          visibilityTime: 2000,
+          autoHide: true,
+          topOffset: 30,
+          bottomOffset: 60,
+          text1: '📹 동영상 파일형식은 전송할 수 없습니다.🙈',
+          text2: '링크 등을 이용하여 전송해주세요🔗'
+        });
+        setMultipleFile('');
+      }
     } catch (err) {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
@@ -282,7 +293,7 @@ export default function ChatingRoomScreen({ route }) {
             icon= {multipleFile ? "cloud-upload" : "file-pdf"}
             title='file'
             animated
-            color="goldenrod"
+            color="maroon"
             onPress={multipleFile ? SynoUpload : selectMultipleFile} 
           />
         </View>
