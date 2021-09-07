@@ -1,0 +1,15 @@
+diff --git a/node_modules/react-native-gifted-chat/lib/Bubble.js b/node_modules/react-native-gifted-chat/lib/Bubble.js
+index 63bde0b..78ce6c9 100644
+--- a/node_modules/react-native-gifted-chat/lib/Bubble.js
++++ b/node_modules/react-native-gifted-chat/lib/Bubble.js
+@@ -208,8 +208,8 @@ export default class Bubble extends React.Component {
+         if (currentMessage &&
+             (currentMessage.sent || currentMessage.received || currentMessage.pending)) {
+             return (<View style={styles.content.tickView}>
+-          {!!currentMessage.sent && (<Text style={[styles.content.tick, this.props.tickStyle]}>✓</Text>)}
+-          {!!currentMessage.received && (<Text style={[styles.content.tick, this.props.tickStyle]}>✓</Text>)}
++          {!!currentMessage.sent && (<Text style={[styles.content.tick, this.props.tickStyle]}>안읽음</Text>)}
++          {!!currentMessage.received && (<Text style={[styles.content.tick, this.props.tickStyle]}>읽음</Text>)}
+           {!!currentMessage.pending && (<Text style={[styles.content.tick, this.props.tickStyle]}>🕓</Text>)}
+         </View>);
+         }

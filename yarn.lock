@@ -7866,6 +7866,11 @@
   dependencies:
     "react-native-fast-image" "8.3.4"
 
+"react-native-image-picker@4.0.6":
+  "integrity" "sha512-Pp3UWKUADuMG1mz12m6dSO/R2KnvXVEd77bldrfTMFpz4PFc4iVKo+bHeS79It0mUBezfzDMgfesg/OPLSugvQ=="
+  "resolved" "https://registry.npmjs.org/react-native-image-picker/-/react-native-image-picker-4.0.6.tgz"
+  "version" "4.0.6"
+
 "react-native-image-viewing@0.2.0":
   "integrity" "sha512-j2JXv86WRXGNme4LPsNCJ/2MgX+oVbmJ5ZLbGrYbKXcCPe9OshqlQI5L3SdbAxWu/F5pubcMaXp0zoYNaZVuzA=="
   "resolved" "https://registry.npmjs.org/react-native-image-viewing/-/react-native-image-viewing-0.2.0.tgz"

@@ -82,7 +82,7 @@ export const sendMessage = (room, text, uri) => {
       user: {data},
     } = getState();
     try {
-      console.log('multipleFile[0].uri', uri)
+      console.log('fileuploadeduri', uri)
       await firestore()
         .collection('rooms')
         .doc(room._id)
@@ -91,7 +91,7 @@ export const sendMessage = (room, text, uri) => {
           uri? 
           {
           text: text,
-          fileuri: uri,
+          image: uri,
           createdAt: new Date().getTime(),
           user: {
             _id: data.userId,

@@ -21,10 +21,10 @@ console.log(data);
 const fscreatereadstrem = fs.createReadStream(
   '/Users/jjh/Documents/ReactNative/chatkitty-example-react-native/package-lock.json',
 );
-console.log(
-  '🚀 ~ file: SynologyAxios.js ~ line 14 ~ fscreatereadstrem',
-  fscreatereadstrem,
-);
+// console.log(
+//   '🚀 ~ file: SynologyAxios.js ~ line 14 ~ fscreatereadstrem',
+//   fscreatereadstrem,
+// );
 
 var config = {
   method: 'post',
