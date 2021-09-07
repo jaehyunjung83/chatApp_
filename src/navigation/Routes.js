@@ -74,9 +74,9 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
                   _id: remoteMessage.data.roomid,
                   // messageid: remoteMessage.data.messageid,
                 },
-                notifiedmessage: {
-                  notifiedmessageid: remoteMessage.data.messageid,
-                },
+                // notifiedmessage: {
+                //   notifiedmessageid: remoteMessage.data.messageid,
+                // },
               }),
           },
         ],

@@ -199,7 +199,9 @@ export default function ChatingRoomScreen({ route }) {
       });
       console.table('ducupick', res);
       setMultipleFile(res);
-      if (res.type = 'video/*') {
+
+      for (let i = 0; i < res.length; i++){
+      if (res[i].type === 'video/*') {
         Toast.show({
           type: 'error',
           position: 'bottom',
@@ -212,6 +214,8 @@ export default function ChatingRoomScreen({ route }) {
         });
         setMultipleFile('');
       }
+    };
+
     } catch (err) {
       //Handling any exception (If any)
       if (DocumentPicker.isCancel(err)) {
@@ -290,7 +294,7 @@ export default function ChatingRoomScreen({ route }) {
           <IconButton
             style={{ marginBottom: 2 }}
             size={28}
-            icon= {multipleFile ? "cloud-upload" : "file-pdf"}
+            icon= {multipleFile ? "send" : "file-upload"}
             title='file'
             animated
             color="maroon"
@@ -328,7 +332,7 @@ export default function ChatingRoomScreen({ route }) {
       }
       user={{ _id: data.userId, name: data.email }}
       renderBubble={(data) => renderBubble(data)}
-      placeholder={multipleFile.length > 0 ? multipleFile[0].name : ''}
+      placeholder={multipleFile? multipleFile[0].name : ''}
       showUserAvatar={false}
       alwaysShowSend={true}
       locale="tr"
