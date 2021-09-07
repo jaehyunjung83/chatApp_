@@ -1,15 +1,162 @@
 diff --git a/node_modules/react-native-gifted-chat/lib/Bubble.js b/node_modules/react-native-gifted-chat/lib/Bubble.js
-index 63bde0b..78ce6c9 100644
+index 63bde0b..12e8962 100644
 --- a/node_modules/react-native-gifted-chat/lib/Bubble.js
 +++ b/node_modules/react-native-gifted-chat/lib/Bubble.js
-@@ -208,8 +208,8 @@ export default class Bubble extends React.Component {
+@@ -53,7 +53,7 @@ const styles = {
+         },
+         bottom: {
+             flexDirection: 'row',
+-            justifyContent: 'flex-end',
++            justifyContent: 'space-between',
+         },
+     }),
+     content: StyleSheet.create({
+@@ -64,7 +64,8 @@ const styles = {
+         },
+         tickView: {
+             flexDirection: 'row',
+-            marginRight: 10,
++            marginLeft: 10,
++            
+         },
+         username: {
+             top: -3,
+@@ -79,7 +80,7 @@ const styles = {
+         },
+     }),
+ };
+-const DEFAULT_OPTION_TITLES = ['Copy Text', 'Cancel'];
++const DEFAULT_OPTION_TITLES = ['메시지 복사하기', '취소'];
+ export default class Bubble extends React.Component {
+     constructor() {
+         super(...arguments);
+@@ -208,8 +209,8 @@ export default class Bubble extends React.Component {
          if (currentMessage &&
              (currentMessage.sent || currentMessage.received || currentMessage.pending)) {
              return (<View style={styles.content.tickView}>
 -          {!!currentMessage.sent && (<Text style={[styles.content.tick, this.props.tickStyle]}>✓</Text>)}
 -          {!!currentMessage.received && (<Text style={[styles.content.tick, this.props.tickStyle]}>✓</Text>)}
-+          {!!currentMessage.sent && (<Text style={[styles.content.tick, this.props.tickStyle]}>안읽음</Text>)}
++          {!!currentMessage.sent && (<Text style={[styles.content.tick, this.props.tickStyle]}></Text>)}
 +          {!!currentMessage.received && (<Text style={[styles.content.tick, this.props.tickStyle]}>읽음</Text>)}
            {!!currentMessage.pending && (<Text style={[styles.content.tick, this.props.tickStyle]}>🕓</Text>)}
          </View>);
          }
+@@ -280,8 +281,8 @@ export default class Bubble extends React.Component {
+             bottomContainerStyle && bottomContainerStyle[position],
+         ]}>
+                 {this.renderUsername()}
+-                {this.renderTime()}
+                 {this.renderTicks()}
++                {this.renderTime()}
+               </View>
+             </View>
+           </TouchableWithoutFeedback>
+diff --git a/node_modules/react-native-gifted-chat/lib/Constant.js b/node_modules/react-native-gifted-chat/lib/Constant.js
+index b574cab..23ade54 100644
+--- a/node_modules/react-native-gifted-chat/lib/Constant.js
++++ b/node_modules/react-native-gifted-chat/lib/Constant.js
+@@ -1,4 +1,6 @@
+ import { Platform } from 'react-native';
++import dayjs from 'dayjs';
++import 'dayjs/locale/ko';
+ export const MIN_COMPOSER_HEIGHT = Platform.select({
+     ios: 33,
+     android: 41,
+@@ -6,6 +8,6 @@ export const MIN_COMPOSER_HEIGHT = Platform.select({
+ });
+ export const MAX_COMPOSER_HEIGHT = 200;
+ export const DEFAULT_PLACEHOLDER = 'Type a message...';
+-export const DATE_FORMAT = 'll';
+-export const TIME_FORMAT = 'LT';
++export const DATE_FORMAT = 'YY년 M 월 D일 (ddd)요일' ;
++export const TIME_FORMAT = 'hh:mm a';
+ //# sourceMappingURL=Constant.js.map
+\ No newline at end of file
+diff --git a/node_modules/react-native-gifted-chat/lib/Day.js b/node_modules/react-native-gifted-chat/lib/Day.js
+index 7829a72..0585026 100644
+--- a/node_modules/react-native-gifted-chat/lib/Day.js
++++ b/node_modules/react-native-gifted-chat/lib/Day.js
+@@ -27,7 +27,7 @@ export default class Day extends PureComponent {
+           <View style={wrapperStyle}>
+             <Text style={[styles.text, textStyle]}>
+               {dayjs(currentMessage.createdAt)
+-                .locale(this.context.getLocale())
++                .locale('ko')
+                 .format(dateFormat)}
+             </Text>
+           </View>
+diff --git a/node_modules/react-native-gifted-chat/lib/GiftedChat.js b/node_modules/react-native-gifted-chat/lib/GiftedChat.js
+index 73ba4ee..6f61eca 100644
+--- a/node_modules/react-native-gifted-chat/lib/GiftedChat.js
++++ b/node_modules/react-native-gifted-chat/lib/GiftedChat.js
+@@ -32,7 +32,7 @@ class GiftedChat extends React.Component {
+         this._bottomOffset = 0;
+         this._maxHeight = undefined;
+         this._isFirstLayout = true;
+-        this._locale = 'en';
++        this._locale = 'ko';
+         this.invertibleScrollViewProps = undefined;
+         this._actionSheetRef = undefined;
+         this._messageContainerRef = React.createRef();
+diff --git a/node_modules/react-native-gifted-chat/lib/MessageImage.js b/node_modules/react-native-gifted-chat/lib/MessageImage.js
+index dd0000e..dcd5dfe 100644
+--- a/node_modules/react-native-gifted-chat/lib/MessageImage.js
++++ b/node_modules/react-native-gifted-chat/lib/MessageImage.js
+@@ -24,9 +24,12 @@ export default class MessageImage extends Component {
+         const { containerStyle, lightboxProps, imageProps, imageStyle, currentMessage, } = this.props;
+         if (!!currentMessage) {
+             return (<View style={[styles.container, containerStyle]}>
+-          <Lightbox activeProps={{
++          <Lightbox 
++            activeProps={{
+                 style: styles.imageActive,
+-            }} {...lightboxProps}>
++            }}
++            springConfig={{ tension: 20, friction: 3 }}
++            {...lightboxProps}>
+             <Image {...imageProps} style={[styles.image, imageStyle]} source={{ uri: currentMessage.image }}/>
+           </Lightbox>
+         </View>);
+diff --git a/node_modules/react-native-gifted-chat/lib/Send.js b/node_modules/react-native-gifted-chat/lib/Send.js
+index 5e4fe5a..71da17f 100644
+--- a/node_modules/react-native-gifted-chat/lib/Send.js
++++ b/node_modules/react-native-gifted-chat/lib/Send.js
+@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
+         color: Color.defaultBlue,
+         fontWeight: '600',
+         fontSize: 17,
+-        backgroundColor: Color.backgroundTransparent,
++        backgroundColor: Color.carrot,
+         marginBottom: 12,
+         marginLeft: 10,
+         marginRight: 10,
+diff --git a/node_modules/react-native-gifted-chat/lib/Time.js b/node_modules/react-native-gifted-chat/lib/Time.js
+index 24b06cc..654ed41 100644
+--- a/node_modules/react-native-gifted-chat/lib/Time.js
++++ b/node_modules/react-native-gifted-chat/lib/Time.js
+@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
+ import React, { Component } from 'react';
+ import { StyleSheet, Text, View } from 'react-native';
+ import dayjs from 'dayjs';
++import 'dayjs/locale/ko';
+ import Color from './Color';
+ import { TIME_FORMAT } from './Constant';
+ import { StylePropType } from './utils';
+@@ -48,7 +49,7 @@ export default class Time extends Component {
+                 timeTextStyle && timeTextStyle[position],
+             ]}>
+             {dayjs(currentMessage.createdAt)
+-                .locale(this.context.getLocale())
++                .locale('ko')
+                 .format(timeFormat)}
+           </Text>
+         </View>);
+@@ -60,7 +61,7 @@ Time.contextTypes = {
+     getLocale: PropTypes.func,
+ };
+ Time.defaultProps = {
+-    position: 'left',
++    position: 'right',
+     currentMessage: {
+         createdAt: null,
+     },
