@@ -79,17 +79,17 @@ export const createRoom = (roomName, navigation, route) => {
         firestore()
           .collection('rooms')
           .add({
-            name: roomName,
+            roomname: roomName,
             routeparams: route.params,
             latestMessage: {
-              text: `You have joined the room ${roomName}.`,
+              text: `${roomName}님과의 대화방이 만들어졌습니다.`,
               createdAt: new Date().getTime(),
             },
           })
           .then((docRef) => {
             console.table(route);
             docRef.collection('MESSAGES').add({
-              text: `You have joined the room ${roomName}.`,
+              text: `${roomName}님과의 대화방이 만들어졌습니다.`,
               createdAt: new Date().getTime(),
               system: true,
             });
@@ -98,9 +98,9 @@ export const createRoom = (roomName, navigation, route) => {
             navigation.navigate('Room', {
               room: {
                 _id: docRef.id,
-                name: roomName,
+                roomname: roomName,
                 latestMessage: {
-                  text: `You have joined the room ${roomName}.`,
+                  text: `${roomName}님과의 대화방이 만들어졌습니다.`,
                   createdAt: new Date().getTime(),
                 },
               },

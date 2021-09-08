@@ -8,7 +8,7 @@ import FormButton from '../components/FormButton';
 import {createRoom} from '../actions/roomsActions';
 
 export default function AddRoomScreen({navigation, route}) {
-  console.table(route);
+  console.table('route',route);
   console.log('addroom dangerouslyGetState()', navigation.dangerouslyGetState())
   const [roomName, setRoomName] = useState('');
   

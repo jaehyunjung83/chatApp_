@@ -1,7 +1,15 @@
 import React, { useEffect } from 'react';
-import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { List, Divider } from 'react-native-paper';
-
+import {
+  Text,
+  View,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+import { List, Divider, Badge } from 'react-native-paper';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+dayjs.extend(relativeTime);
 import { useDispatch, useSelector } from 'react-redux';
 import { firebase } from '@react-native-firebase/functions';
 import { fetchRooms } from '../actions/roomsActions';
@@ -11,7 +19,6 @@ import Loading from '../components/Loading';
 export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
   const { rooms, loading } = useSelector((state) => state.rooms);
-  
 
   useEffect(() => {
     dispatch(fetchRooms());
@@ -44,18 +51,35 @@ export default function HomeScreen({ navigation }) {
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={() => <Divider />}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              onPress={() => navigation.navigate('Room', { room: item })}
-            >
-              <List.Item
-                title={item.name}
-                description={item.latestMessage.text}
-                titleNumberOfLines={1}
-                titleStyle={styles.listTitle}
-                descriptionStyle={styles.listDescription}
-                descriptionNumberOfLines={1}
-              />
-            </TouchableOpacity>
+            console.log('home screen item', item),
+            (
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Room', { room: item })}
+              >
+                
+                <List.Item
+                  title={item.roomname}
+                  description={item.latestMessage.text}
+                  right={(props) => (
+                    <View style={styles.listLatestMessage}>
+                      <Badge style={{backgroundColor: 'firebrick'}}>999+</Badge>
+                      <Text style={styles.listLatestMessageTime}>
+                        {dayjs(item.latestMessage.createdAt)
+                        .locale('ko')
+                        // .format('LLLL')
+                        .fromNow()
+                        }
+                      </Text>
+                    </View>
+                  )}
+                  titleNumberOfLines={1}
+                  titleStyle={styles.listTitle}
+                  descriptionStyle={styles.listDescription}
+                  descriptionNumberOfLines={1}
+                />
+              
+              </TouchableOpacity>
+            )
           )}
         />
       )}
@@ -70,10 +94,20 @@ const styles = StyleSheet.create({
   },
   listTitle: {
     fontSize: 22,
-    color: '#556677',
+    color: 'black',
   },
   listDescription: {
-    fontSize: 16,
+    fontSize: 13,
     color: '#556661',
+  },
+  listLatestMessage: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  listLatestMessageTime: {
+    fontSize: 13,
+    color: '#556661',
+    
+   
   },
 });

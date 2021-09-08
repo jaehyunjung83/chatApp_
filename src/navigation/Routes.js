@@ -41,6 +41,8 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
   // );
   const { rooms } = useSelector((state) => state.rooms);
   
+
+  // app닫혀있을 떄
   useEffect(() => {
     console.log('route', route);
     messaging().onNotificationOpenedApp((remoteMessage) => {
@@ -57,6 +59,8 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
       });
     });
   },[]);
+
+  // app 열고 있는 도중에
   useEffect((remoteMessage) => {
     messaging().onMessage(async (remoteMessage) => {
       console.log('app열려있을 때 function noti: ', remoteMessage);

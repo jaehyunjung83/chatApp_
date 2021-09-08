@@ -31,6 +31,7 @@ exports.addMessage = functions.https.onRequest(async (req, res) => {
 
 // eslint-disable-next-line no-unused-vars
 async function sendNotification() {
+  // 삼성 갤럭시 폴드 device token
   const registrationToken =
     'fQw7nwfATbmFm6h8c5xEiA:APA91bET7ECcmOfnvdJ_9jTfibA0iw-Xj4qFNqft-FN7VZt0OCQ2U1ovk0dYl5E2t1jVrpYi4v54xA-59Hcr6CH2aCkycNmVpYfn8jqhpU1ti1lZ7iZR8OKId0UeYTTZj8Alcvb6dskT';
 
@@ -98,6 +99,7 @@ exports.MessageNotify = functions.firestore
     // e.g. {'name': 'Marie', 'age': 66}
 
     const tokens = [
+      // 삼성 갤럭시 폴드 device token
       'fQw7nwfATbmFm6h8c5xEiA:APA91bET7ECcmOfnvdJ_9jTfibA0iw-Xj4qFNqft-FN7VZt0OCQ2U1ovk0dYl5E2t1jVrpYi4v54xA-59Hcr6CH2aCkycNmVpYfn8jqhpU1ti1lZ7iZR8OKId0UeYTTZj8Alcvb6dskT',
       // 추가 등록가능
     ];

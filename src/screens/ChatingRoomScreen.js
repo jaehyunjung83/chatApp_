@@ -125,9 +125,11 @@ export default function ChatingRoomScreen({ route }) {
   };
 
   const renderBubble = (props, message, data) => {
+    
     return (
       <Bubble
         {...props}
+        optionTitles={true}
         wrapperStyle={{
           right: {
             // Here is the color change
@@ -146,7 +148,10 @@ export default function ChatingRoomScreen({ route }) {
             color: '#fff',
           },
         }}
-        tickStyle={{ color: props.currentMessage.received ? 'red' : 'white' }}
+        tickStyle={{ 
+          color: props.currentMessage.received ? 'navajowhite' : 'white', 
+          fontWeight: props.currentMessage.received ? 'bold' : 'normal' 
+        }}
         // renderTicks={renderSentTicks}
       />
     );
