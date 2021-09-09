@@ -51,7 +51,7 @@ export default function HomeScreen({ navigation }) {
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={() => <Divider />}
           renderItem={({ item }) => (
-            console.log('home screen item', item),
+            // console.log('home screen item', item),
             (
               <TouchableOpacity
                 onPress={() => navigation.navigate('Room', { room: item })}

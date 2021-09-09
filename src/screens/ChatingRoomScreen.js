@@ -70,7 +70,6 @@ export default function ChatingRoomScreen({ route }) {
   // }
   useEffect(() => {
     dispatch(fetchMessages(room));
-    //firebase.auth().signOut();
   }, []);
 
   useEffect(() => {
@@ -129,7 +128,6 @@ export default function ChatingRoomScreen({ route }) {
     return (
       <Bubble
         {...props}
-        optionTitles={true}
         wrapperStyle={{
           right: {
             // Here is the color change

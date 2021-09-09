@@ -1,5 +1,5 @@
 import {firestore, auth} from '../config/firebase';
-
+import React, {useEffect} from 'react';
 export const setRef = () => {
   let senderUserId = auth().currentUser();
   let receiverUserId = '1234';
@@ -67,6 +67,8 @@ export const setMessageReceived = (room) => {
           .collection('MESSAGES')
           .doc(message._id)
           .update({received: true})
+          // 내가 아닌 user가 보낸 메시지 중 received: false인게 있어야 setMessageReceivedSuccess를 실행하는데
+          // 모두 true 처리 되어있다면 success 처리 자체가 없어서 redux-logger에도 당연히 안 뜸!!
           .then(() => dispatch(setMessageReceivedSuccess()))
           .catch((error) => dispatch(setMessageReceivedFail(error)));
       }
@@ -83,6 +85,7 @@ export const sendMessage = (room, text, uri) => {
     } = getState();
     try {
       console.log('fileuploadeduri', uri)
+      
       await firestore()
         .collection('rooms')
         .doc(room._id)
@@ -110,19 +113,33 @@ export const sendMessage = (room, text, uri) => {
           sent: true,
           received: false,
         }
-        );
+            )
+      
+  
       await firestore()
         .collection('rooms')
         .doc(room._id)
         .set(
+          uri? 
+          {
+            latestMessage: {
+              text: '📩 ',
+              createdAt: new Date().getTime(),
+            },
+          } :
           {
             latestMessage: {
               text,
               createdAt: new Date().getTime(),
             },
-          },
+          }
+          ,
           {merge: true},
-        );
+            );
+
+      
+
+      
       return dispatch(sendMessageSuccess());
     } catch (error) {
       return dispatch(sendMessageFail(error));
@@ -134,7 +151,12 @@ export const fetchMessages = (room) => {
   
   return async (dispatch, getState) => {
     dispatch(fetchMessagesInit());
-
+    // const {
+    //   messages: {messagesList},
+    //   user: {
+    //     data: {userId}, //내 id
+    //   },
+    // } = getState();
     try {
       await firestore()
         .collection('rooms')
@@ -151,7 +173,6 @@ export const fetchMessages = (room) => {
               createdAt: new Date().getTime(),
               ...firebaseData,
             };
-            
             if (!firebaseData.system) {
               data.user = {
                 ...firebaseData.user,
@@ -160,10 +181,44 @@ export const fetchMessages = (room) => {
             return data;
           });
           return dispatch(fetchMessagesSuccess(messages));
-          setMessages(messages);
         });
     } catch (error) {
       return dispatch(fetchMessagesFail(error));
     }
   };
 };
+
+
+
+
+
+
+const firestoreTransaction = async() => {
+  
+  
+  const reconcilReference = await firestore()
+  .doc(`rooms/UvTHR52PYAdLjSoteyqq`);
+  const collectionReference = reconcilReference.collection('MESSAGES').doc('0sJXXHOspJhjH0cKOhJL');
+  console.log("🚀 ~ file: messageActions.js ~ line 210 ~ firestoreTransaction ~ collection", collectionReference)
+
+    return firestore().runTransaction(async transaction => {
+      const messageSnapshot = await transaction.get(reconcilReference)
+      console.log("🚀 ~ file: messageActions.js ~ line 202 ~ returnfirestore ~ messageSnapshot", messageSnapshot)
+      
+      const unreadSnapshot = await transaction.get(collectionReference)
+      console.log("🚀 ~ file: messageActions.js ~ line 207 ~ returnfirestore ~ unreadSnapshot", unreadSnapshot)
+
+      if (!unreadSnapshot.data().received) {
+      transaction.update(reconcilReference, {
+        unReadMessageCount: messageSnapshot.data().unReadMessageCount ? messageSnapshot.data().unReadMessageCount + 1 : 1,
+      });
+      } 
+      else 
+      {console.log(`${unreadSnapshot.data().text} ${unreadSnapshot.data().imgage}메시지를 상대방이 읽었음`)}
+    });
+          
+
+  };
+  firestoreTransaction()
+  .then(()=> console.log('server changed'))
+  .catch((err)=> console.error(err));

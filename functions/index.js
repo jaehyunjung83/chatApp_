@@ -2,8 +2,7 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 const faker = require('faker');
 const serviceAccount = require('./djsl-9198c-firebase-adminsdk-2cj0l-b59c845556.json');
-const Synology = require('./node_modules/@ltaoo/synology/index.js');
-const path = require('path');
+
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -112,7 +111,8 @@ exports.MessageNotify = functions.firestore
     console.log('context', context);
     const payLoad = {
       notification: {
-        body: newValue.user.name,
+        // user.name 없는 걸로 나옴!!! 수정해야 함!
+        body: newValue.user.name + '님에게 온 메시지',
         title: newValue.text,
         sound: '3',
       },
@@ -171,33 +171,4 @@ exports.createTeamMember = functions.firestore
 //   response.send('Hello from Firebase!');
 // });
 
-const { ACCOUNT, PASSWD, HOST, PORT } = process.env;
-const synology = new Synology({
-  protocol: 'https',
-  host: 're-ply.r-e.kr',
-  port: 5001,
-});
 
-async function synologyUpload() {
-  try {
-    const { Auth, FileStation } = synology;
-    // login
-    await Auth.auth({
-      username: '정재현',
-      password: 'wjdwogus1@',
-    });
-    await FileStation.upload({
-      path: '/home/Drive',
-      overwrite: 'false',
-      // file: path.join(__dirname, './example.jpg'),
-      //   name: undefined,
-      name: 'firebase.json',
-      // file: 'https://ss1.baidu.com/6ONXsjip0QIZ8tyhnq/it/u=317358076,3499491004&fm=173&app=49&f=JPEG?w=218&h=146&s=011E827D05D0DC635AA5A57B03004073',
-      file: 'content://com.android.providers.media.documents/document/document%3A28',
-      // name: 'hello.gif',
-    });
-  } catch (err) {
-    console.error(err);
-  }
-}
-synologyUpload();
