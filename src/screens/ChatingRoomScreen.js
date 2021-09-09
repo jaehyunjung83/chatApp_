@@ -69,44 +69,46 @@ export default function ChatingRoomScreen({ route }) {
   //   console.log(notifiedmessageid);
   // }
   useEffect(() => {
+    console.log('chatingroom에서 실행된 fetchmessage action')
     dispatch(fetchMessages(room));
   }, []);
 
   useEffect(() => {
+    console.log('chatingroom에서 실행된 setmessagerecieve action')
     dispatch(setMessageReceived(room));
   }, []);
 
-  const [synosid, setSynoSid] = useState('');
-  const protocol = 'https';
-  const host = 're-ply.r-e.kr';
-  const port = '5001';
-  const authpath = 'auth.cgi?';
-  const authapi = 'api=SYNO.API.Auth';
-  const authapiversion = '3';
-  const authmethod = 'method=login';
-  const username = '정재현';
-  const password = 'wjdwogus1@';
+  // const [synosid, setSynoSid] = useState('');
+  // const protocol = 'https';
+  // const host = 're-ply.r-e.kr';
+  // const port = '5001';
+  // const authpath = 'auth.cgi?';
+  // const authapi = 'api=SYNO.API.Auth';
+  // const authapiversion = '3';
+  // const authmethod = 'method=login';
+  // const username = '정재현';
+  // const password = 'wjdwogus1@';
 
-  const synoauth = async (synosid) => {
-    const authurl = `${protocol}://${host}:${port}/webapi/${authpath}${authapi}&version=${authapiversion}&${authmethod}&account=${username}&passwd=${password}&session=FileStation&format=cookie`;
-    // `https://re-ply.r-e.kr:5001/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=${username}&passwd=${password}&session=FileStation&format=cookie`;
+  // const synoauth = async (synosid) => {
+  //   const authurl = `${protocol}://${host}:${port}/webapi/${authpath}${authapi}&version=${authapiversion}&${authmethod}&account=${username}&passwd=${password}&session=FileStation&format=cookie`;
+  //   // `https://re-ply.r-e.kr:5001/webapi/auth.cgi?api=SYNO.API.Auth&version=3&method=login&account=${username}&passwd=${password}&session=FileStation&format=cookie`;
 
-    axios
-      .get(authurl)
-      .then(console.time('auth-req-res'))
-      .then((res) => {
-        // console.table(res.data);
-        console.timeEnd('auth-req-res');
-        setSynoSid(res.data.data.sid);
-      });
-  };
+  //   axios
+  //     .get(authurl)
+  //     .then(console.time('auth-req-res'))
+  //     .then((res) => {
+  //       // console.table(res.data);
+  //       console.timeEnd('auth-req-res');
+  //       setSynoSid(res.data.data.sid);
+  //     });
+  // };
 
-  useEffect(() => {
-    synoauth();
-  }, []);
-  useEffect(() => {
-    console.log('syno sid', synosid);
-  }, [synosid]);
+  // useEffect(() => {
+  //   synoauth();
+  // }, []);
+  // useEffect(() => {
+  //   console.log('syno sid', synosid);
+  // }, [synosid]);
 
   const [notimsgidx, setNotiMsgIdx] = useState('0');
 

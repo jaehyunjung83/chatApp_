@@ -25,9 +25,9 @@ export const fetchMessagesInit = () => ({
   type: 'FETCH_MESSAGES_INIT',
 });
 
-export const fetchMessagesSuccess = (messages) => ({
+export const fetchMessagesSuccess = (fetchmessages) => ({
   type: 'FETCH_MESSAGES_SUCCESS',
-  payload: messages,
+  payload: fetchmessages,
 });
 
 export const fetchMessagesFail = (error) => ({
@@ -148,7 +148,7 @@ export const sendMessage = (room, text, uri) => {
 };
 
 export const fetchMessages = (room) => {
-  
+  console.log('send message일때 fetch message 자동실행 여부', room)
   return async (dispatch, getState) => {
     dispatch(fetchMessagesInit());
     // const {
@@ -164,7 +164,7 @@ export const fetchMessages = (room) => {
         .collection('MESSAGES')
         .orderBy('createdAt', 'desc')
         .onSnapshot((querySnapshot) => {
-          const messages = querySnapshot.docs.map((doc) => {
+          const fetchmessages = querySnapshot.docs.map((doc) => {
             const firebaseData = doc.data();
             
             const data = {
@@ -180,7 +180,7 @@ export const fetchMessages = (room) => {
             }
             return data;
           });
-          return dispatch(fetchMessagesSuccess(messages));
+          return dispatch(fetchMessagesSuccess(fetchmessages));
         });
     } catch (error) {
       return dispatch(fetchMessagesFail(error));
