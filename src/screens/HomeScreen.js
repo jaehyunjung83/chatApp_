@@ -22,24 +22,11 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     dispatch(fetchRooms());
-    // firebase.auth().signOut();
   }, []);
 
   const renderLoadingScreen = () => {
     return <Loading />;
   };
-
-  // functions 결과 받아오기
-  // const data = firebase.functions().httpsCallable('ListProducts');
-  // try {
-  //   const response = data({
-  //     page: '1',
-  //     limit: '10',
-  //   });
-  //   console.log(response);
-  // } catch (e) {
-  //   console.error(e);
-  // }
 
   return (
     <View style={styles.container}>
@@ -52,34 +39,29 @@ export default function HomeScreen({ navigation }) {
           ItemSeparatorComponent={() => <Divider />}
           renderItem={({ item }) => (
             // console.log('home screen item', item),
-            (
-              <TouchableOpacity
-                onPress={() => navigation.navigate('Room', { room: item })}
-              >
-                
-                <List.Item
-                  title={item.roomname}
-                  description={item.latestMessage.text}
-                  right={(props) => (
-                    <View style={styles.listLatestMessage}>
-                      <Badge style={{backgroundColor: 'firebrick'}}>999+</Badge>
-                      <Text style={styles.listLatestMessageTime}>
-                        {dayjs(item.latestMessage.createdAt)
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Room', { room: item })}
+            >
+              <List.Item
+                title={item.roomname}
+                description={item.latestMessage.text}
+                right={(props) => (
+                  <View style={styles.listLatestMessage}>
+                    <Badge style={{ backgroundColor: 'firebrick' }}>{item.unReadMessageCount}</Badge>
+                    <Text style={styles.listLatestMessageTime}>
+                      {dayjs(item.latestMessage.createdAt)
                         .locale('ko')
                         // .format('LLLL')
-                        .fromNow()
-                        }
-                      </Text>
-                    </View>
-                  )}
-                  titleNumberOfLines={1}
-                  titleStyle={styles.listTitle}
-                  descriptionStyle={styles.listDescription}
-                  descriptionNumberOfLines={1}
-                />
-              
-              </TouchableOpacity>
-            )
+                        .fromNow()}
+                    </Text>
+                  </View>
+                )}
+                titleNumberOfLines={1}
+                titleStyle={styles.listTitle}
+                descriptionStyle={styles.listDescription}
+                descriptionNumberOfLines={1}
+              />
+            </TouchableOpacity>
           )}
         />
       )}
@@ -107,7 +89,5 @@ const styles = StyleSheet.create({
   listLatestMessageTime: {
     fontSize: 13,
     color: '#556661',
-    
-   
   },
 });

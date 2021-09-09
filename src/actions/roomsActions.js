@@ -54,10 +54,12 @@ export const fetchRooms = () => {
               return {
                 _id: documentSnapshot.id,
                 // give defaults
-                name: '',
+                // name: '',
                 latestMessage: {
                   text: '',
+                  createdAt: '',
                 },
+                unReadMessageCount: '',
                 ...documentSnapshot.data(),
               };
             });

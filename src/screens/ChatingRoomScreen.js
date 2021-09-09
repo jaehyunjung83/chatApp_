@@ -42,7 +42,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 
 export default function ChatingRoomScreen({ route }) {
   const { room } = route.params;
-
+  
   const notifiedmessageid = [];
   if (route.params.notifiedmessage != undefined) {
     notifiedmessageid.push(route.params.notifiedmessage.notifiedmessageid);
