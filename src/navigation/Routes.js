@@ -62,11 +62,12 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
       // PushNotification.localNotification(notif);
       console.log('app열려있을 때 function noti: ', remoteMessage);
       Alert.alert(
-        `${remoteMessage.notification.body} 님이`,
+        `${remoteMessage.notification.title} 님이`,
         // JSON.stringify(remoteMessage.notification.body) + '님이' +
         '\n' +
-        JSON.stringify(remoteMessage.notification.title) + '메시지를 읽었습니다'
-          ,
+        JSON.stringify(remoteMessage.notification.body) + '메시지를' +
+        JSON.stringify(remoteMessage.data.footage) + '에 읽었습니다',
+
         [
           {
             text: 'OK',

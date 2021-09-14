@@ -137,9 +137,9 @@ exports.MessageNotify = functions.firestore
     const payLoad = {
       notification: {
         // user.name 없는 걸로 나옴!!! 수정해야 함!
-        body: newValue.user.name,
-        title: newValue.text,
-        sound: '3',
+        title: newValue.user.name,
+        body: newValue.text? newValue.text : newValue.image,
+        sound: '1',
       },
       data: {
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
@@ -148,11 +148,13 @@ exports.MessageNotify = functions.firestore
         type: 'Room',
         roomid: context.params.documentId,
         messageid: context.params.documentId,
+        footage: context.timestamp,
       },
     };
 
     try {
       const response = await admin.messaging().sendToDevice(tokens, payLoad);
+      console.log('payLoad.data', payLoad.notification);
       console.log('payLoad.data', payLoad.data);
       console.log('Notification Send succesfuully');
       return response;
