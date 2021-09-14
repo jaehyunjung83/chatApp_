@@ -40,16 +40,12 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
   //   navigation.dangerouslyGetState().routes,
   // );
   const { rooms } = useSelector((state) => state.rooms);
-  
 
   // app닫혀있을 떄
   useEffect(() => {
     console.log('route', route);
     messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.log(
-        'Notification caused app to open from background state:',
-        remoteMessage,
-      );
+      console.log('app닫혀있을 때 function noti:', remoteMessage);
 
       navigation.navigate(remoteMessage.data.type, {
         room: {
@@ -58,17 +54,19 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
         },
       });
     });
-  },[]);
+  }, []);
 
-  // app 열고 있는 도중에
+  // app 열고 있는 도중에 noti왔을 때
   useEffect((remoteMessage) => {
     messaging().onMessage(async (remoteMessage) => {
+      // PushNotification.localNotification(notif);
       console.log('app열려있을 때 function noti: ', remoteMessage);
       Alert.alert(
-        'A new FCM message arrived!',
-        JSON.stringify(remoteMessage.notification.title) +
-          '\n' +
-          JSON.stringify(remoteMessage.notification.body),
+        `${remoteMessage.notification.body} 님이`,
+        // JSON.stringify(remoteMessage.notification.body) + '님이' +
+        '\n' +
+        JSON.stringify(remoteMessage.notification.title) + '메시지를 읽었습니다'
+          ,
         [
           {
             text: 'OK',
@@ -87,7 +85,7 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
         { cancelable: true },
       );
     });
-  },[]);
+  }, []);
 
   return (
     <ChatAppStack.Navigator

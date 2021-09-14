@@ -191,3 +191,264 @@ ngrok authtoken 1xX2YQ18j7AAoRAjE7QVttJ2cFo_6APtpbgLFck2DCQSvG6YH
 ```
 ngrok http 3000 (ExpressServer에 지정하고 synology에 포트포워딩, 방화벽 허용한 포트)
 ```
+
+
+#   Firebase Emulator 사용법(FireStore Export or Import 포함)
+
+<!-- you did not need to start billing in your firebase console. 
+https://www.npmjs.com/package/firestore-export-import 
+
+1. Get your service account key 
+
+    Open Firebase console > Project settings > Service accounts > generate new private key
+
+2. rename the downloaded file with serviceAccountKey.json
+
+    -Now create a new folder and index.js file.
+
+    -Paste you servicekey.json in this folder
+
+    -Now install this package
+
+3. npm install firestore-export-import
+
+
+3. Exporting data from firebase
+
+- anyname.js    -> node anyname.js
+
+    ```
+    const { initializeApp} =  require('firestore-export-import')
+
+    const  serviceAccount  =  require('./serviceAccountKey.json')
+
+    const  appName  =  '[DEFAULT]'
+
+    initializeApp(serviceAccount, appName)
+
+    const  fs  =  require('fs');
+
+    const { backup } =  require('firestore-export-import')
+    //backup('collection name')
+
+    backup('users').then((data) =>
+    {
+        const  json  =  JSON.stringify(data);
+
+        //where collection.json is your output file name.
+        fs.writeFile('collection.json', json, 'utf8',()=>{
+
+        console.log('done');
+
+    })
+    });
+    ```
+
+
+ - https://codebeautify.org/jsonviewer
+
+    This anyname.js was just a very basic configuration which exports the whole collection with everything in it, read their documentation you could do queries and much more!
+
+4. Importing data to firebase
+
+    ```
+    const { initializeApp,restore } =  require('firestore-export-import')
+
+    const  serviceAccount  =  require('./serviceAccountKey.json')
+    const  appName  =  '[DEFAULT]'
+
+    initializeApp(serviceAccount, appName)
+    restore('collection.json', {
+    //where refs is an array of key items
+        refs: ['users'],
+        //autoParseDates to parse dates if documents have timestamps
+        autoParseDates: true,
+
+        },()=>{
+
+    console.log('done');
+    })
+    ```
+     -->
+
+
+    - https://jsmobiledev.com/article/firebase-emulator/
+
+
+1. Emulator 실행
+```
+firebase emulators:start
+```
+- function만 실행할 거면
+```
+firebase emulators:start-only functions
+```
+-->
+```
+(base) jjh@MacBook-Pro-3 functions % firebase emulators:start
+i  emulators: Starting emulators: auth, functions, firestore, pubsub
+⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: database, hosting, storage
+⚠  Your requested "node" version "14" doesn't match your global version "15"
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+i  pubsub: Pub/Sub Emulator logging to pubsub-debug.log
+⚠  ui: Emulator UI unable to start on port 4000, starting on 4001 instead.
+i  ui: Emulator UI logging to ui-debug.log
+i  functions: Watching "/Users/jjh/Documents/ReactNative/chatApp_/functions" for Cloud Functions...
+>  admin initialized
+✔  functions[us-central1-addMessage]: http function initialized (http://localhost:5001/djsl-9198c/us-central1/addMessage).
+✔  functions[us-central1-listProducts]: http function initialized (http://localhost:5001/djsl-9198c/us-central1/listProducts).
+✔  functions[us-central1-ListProducts]: http function initialized (http://localhost:5001/djsl-9198c/us-central1/ListProducts).
+✔  functions[us-central1-MessageNotify]: firestore function initialized.
+✔  functions[us-central1-createTeamMember]: firestore function initialized.
+
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4001                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬─────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI             │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Authentication │ localhost:5003 │ http://localhost:4001/auth      │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Functions      │ localhost:5001 │ http://localhost:4001/functions │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Firestore      │ localhost:5002 │ http://localhost:4001/firestore │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Pub/Sub        │ localhost:5004 │ n/a                             │
+└────────────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+```
+
+2. FireStore의 data 전체 가져오기
+
+```
+firestore-export --accountCredentials djsl-9198c-firebase-adminsdk-2cj0l-b59c845556(바꿔도됨).json --backupFile output.json(바꿔도됨)
+```
+-->
+```
+Starting Export 🏋️
+Retrieving documents from rooms
+Retrieving documents from userProfile
+Retrieving documents from users
+Retrieving documents from rooms/9qGpWJzCRVHN8NNPZko6/MESSAGES
+Retrieving documents from rooms/Az5FoDJMobVm7Nr8CyrT/MESSAGES
+Retrieving documents from rooms/xy34sisvrFN0rbLZjAjp/MESSAGES
+Retrieving documents from rooms/UvTHR52PYAdLjSoteyqq/MESSAGES
+Retrieving documents from rooms/mYPIj3VCNrZpET0DAiY4/MESSAGES
+Retrieving documents from rooms/htijMyIpvJxiYaildS5z/MESSAGES
+Results were saved to output.json
+All done 🎉
+```
+
+3. FireStore data Emulator에 Import하기
+
+```
+firestore-import --accountCredentials djsl-9198c-firebase-adminsdk-2cj0l-b59c845556.json  --backupFile output.json 
+```
+
+```
+About to import data 'output.json' to the 'djsl-9198c' firestore at '[database root]'.
+ === Warning: This will overwrite existing data. Do you want to proceed? === 
+✔ Proceed with import? (y/N) · true
+Starting Import 🏋️
+Writing documents for rooms
+Writing documents for userProfile
+Writing documents for users
+Writing documents for rooms/9qGpWJzCRVHN8NNPZko6/MESSAGES
+Writing documents for rooms/Az5FoDJMobVm7Nr8CyrT/MESSAGES
+Writing documents for rooms/UvTHR52PYAdLjSoteyqq/MESSAGES
+Writing documents for rooms/htijMyIpvJxiYaildS5z/MESSAGES
+Writing documents for rooms/mYPIj3VCNrZpET0DAiY4/MESSAGES
+Writing documents for rooms/xy34sisvrFN0rbLZjAjp/MESSAGES
+All done 🎉
+```
+
+4. Emulator에 있는 data를 backup폴더에 내보내 놓기
+
+```
+firebase emulators:export ./emulators.backup
+```
+-->
+```
+i  Found running emulator hub for project djsl-9198c at http://localhost:4400
+i  Creating export directory /Users/jjh/Documents/ReactNative/chatApp_/functions/emulators.backup
+i  Exporting data to: /Users/jjh/Documents/ReactNative/chatApp_/functions/emulators.backup
+✔  Export complete
+```
+
+5. Emulator 다시 시작 시
+
+```
+firebase emulators:start --import=./emulators.backup
+```
+-->
+```
+i  emulators: Starting emulators: auth, functions, firestore, pubsub
+⚠  functions: The following emulators are not running, calls to these services from the Functions emulator will affect production: database, hosting, storage
+⚠  Your requested "node" version "14" doesn't match your global version "15"
+
+
+i  firestore: Importing data from /Users/jjh/Documents/ReactNative/chatApp_/functions/emulators.backup/firestore_export/firestore_export.overall_export_metadata
+
+
+⚠  firestore: Did not find a Cloud Firestore rules file specified in a firebase.json config file.
+⚠  firestore: The emulator will default to allowing all reads and writes. Learn more about this option: https://firebase.google.com/docs/emulator-suite/install_and_configure#security_rules_configuration.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+i  auth: Importing config from /Users/jjh/Documents/ReactNative/chatApp_/functions/emulators.backup/auth_export/config.json
+i  auth: Importing accounts from /Users/jjh/Documents/ReactNative/chatApp_/functions/emulators.backup/auth_export/accounts.json
+i  pubsub: Pub/Sub Emulator logging to pubsub-debug.log
+⚠  ui: Emulator UI unable to start on port 4000, starting on 4001 instead.
+i  ui: Emulator UI logging to ui-debug.log
+i  functions: Watching "/Users/jjh/Documents/ReactNative/chatApp_/functions" for Cloud Functions...
+>  admin initialized
+✔  functions[us-central1-addMessage]: http function initialized (http://localhost:5001/djsl-9198c/us-central1/addMessage).
+✔  functions[us-central1-listProducts]: http function initialized (http://localhost:5001/djsl-9198c/us-central1/listProducts).
+✔  functions[us-central1-ListProducts]: http function initialized (http://localhost:5001/djsl-9198c/us-central1/ListProducts).
+✔  functions[us-central1-MessageNotify]: firestore function initialized.
+✔  functions[us-central1-createTeamMember]: firestore function initialized.
+
+┌─────────────────────────────────────────────────────────────┐
+│ ✔  All emulators ready! It is now safe to connect your app. │
+│ i  View Emulator UI at http://localhost:4001                │
+└─────────────────────────────────────────────────────────────┘
+
+┌────────────────┬────────────────┬─────────────────────────────────┐
+│ Emulator       │ Host:Port      │ View in Emulator UI             │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Authentication │ localhost:5003 │ http://localhost:4001/auth      │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Functions      │ localhost:5001 │ http://localhost:4001/functions │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Firestore      │ localhost:5002 │ http://localhost:4001/firestore │
+├────────────────┼────────────────┼─────────────────────────────────┤
+│ Pub/Sub        │ localhost:5004 │ n/a                             │
+└────────────────┴────────────────┴─────────────────────────────────┘
+  Emulator Hub running at localhost:4400
+  Other reserved ports: 4500
+
+Issues? Report them at https://github.com/firebase/firebase-tools/issues and attach the *-debug.log files.
+ 
+>  admin initialized
+```
+
+
+# 미비점
+
+> user별로 room 나눠서 넣기
+
+> sender의 unreadmessagecount와 receiver의 unreadmessagecount 구분해서 넣기
+
+> Emulator FireStore Functions 코드와 연동 안 되는 문제 해결
+
+> Functions NotificationMessage가 여러번 오는 문제 해결
+(route의 문제? functions의 문제?)
+
+> Functions NotificationMessage를 실제 메시지 1로 count하는 문제 해결
+(-> unreadmessagecount에 notification이 count되는 문제발생)
+

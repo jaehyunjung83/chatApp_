@@ -4209,7 +4209,7 @@
   dependencies:
     "micromatch" "^4.0.2"
 
-"firebase-admin@9.11.0":
+"firebase-admin@^9.11.0", "firebase-admin@9.11.0":
   "integrity" "sha512-68fXdwcKF99LkWBE33M5hnLwjvGpbCRznIOtZVsiBqZdM9iwxlTfNEpAckh++o3GdJcSLRUWmIN+MKqPUsxoCA=="
   "resolved" "https://registry.npmjs.org/firebase-admin/-/firebase-admin-9.11.0.tgz"
   "version" "9.11.0"
@@ -4224,6 +4224,13 @@
   optionalDependencies:
     "@google-cloud/firestore" "^4.5.0"
     "@google-cloud/storage" "^5.3.0"
+
+"firestore-export-import@0.16.0":
+  "integrity" "sha512-9/wD5E1adFBUnRdzfPpBM8MTC54co1GB1Ji5edock8gbkxUqA601Nil9yGHGcPashYMGejms7U1gjHTtb4OG8w=="
+  "resolved" "https://registry.npmjs.org/firestore-export-import/-/firestore-export-import-0.16.0.tgz"
+  "version" "0.16.0"
+  dependencies:
+    "firebase-admin" "^9.11.0"
 
 "flat-cache@^2.0.1":
   "integrity" "sha512-LoQe6yDuUMDzQAEH8sgmh4Md6oZnc/7PjtwjNFSzveXqSHt6ka9fPBuso7IGf9Rz4uqnSnWiFH2B/zj24a5ReA=="

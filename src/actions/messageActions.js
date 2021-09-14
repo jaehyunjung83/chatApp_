@@ -1,5 +1,6 @@
 import { firestore, auth } from '../config/firebase';
 import React, { useEffect } from 'react';
+import { SystemMessage } from 'react-native-gifted-chat';
 export const setRef = () => {
   let senderUserId = auth().currentUser();
   let receiverUserId = '1234';
@@ -60,6 +61,7 @@ export const setMessageReceived = (room) => {
       },
     } = getState();
     messagesList.map((message) => {
+      const NotMeUnRead = !message?.received && message?.user._id !== userId;
       if (!message?.received && message?.user._id !== userId) {
         firestore()
           .collection('rooms')
@@ -67,12 +69,28 @@ export const setMessageReceived = (room) => {
           .collection('MESSAGES')
           .doc(message._id)
           .update({ received: true })
+
           // 내가 아닌 user가 보낸 메시지 중 received: false인게 있어야 setMessageReceivedSuccess를 실행하는데
           // 모두 true 처리 되어있다면 success 처리 자체가 없어서 redux-logger에도 당연히 안 뜸!!
           .then(() => dispatch(setMessageReceivedSuccess()))
+          // .then(() =>
+          //   firestore().runTransaction(async (transaction) => {
+          //     const MTR = (await transaction.get(firestore().collection('rooms').doc(room._id))).data().MeToRead;
+          //     transaction.update(firestore().doc(`rooms/${room._id}`), {
+          //       MeToRead: MTR? MTR - 1 : 0,
+          //     });
+          //   }),
+          // )
+          
           .catch((error) => dispatch(setMessageReceivedFail(error)));
+      } else {
+        console.log('안 읽은 메시지 없음!');
       }
     });
+    await firestore()
+      .collection('rooms')
+      .doc(room._id)
+      .update({MeToRead: 0})
   };
 };
 
@@ -81,6 +99,7 @@ export const sendMessage = (room, text, uri) => {
   return async (dispatch, getState) => {
     dispatch(sendMessageInit());
     const {
+      messages: { messagesList },
       user: { data },
     } = getState();
     try {
@@ -135,6 +154,40 @@ export const sendMessage = (room, text, uri) => {
           { merge: true },
         );
 
+
+        const OTR = [];
+      await 
+      firestore()
+      .collection('rooms')
+      .doc(room._id)
+      .collection('MESSAGES')
+      .where('user._id', '==', data.userId)
+      .where('received', '==', false)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          OTR.push(doc.data());
+        });
+      });
+      console.log('OTR',OTR)
+      await firestore()
+      .collection('rooms')
+      .doc(room._id)
+      .update({OtherToRead: OTR.length});
+
+
+      // try {
+      //   await firestore().runTransaction(async (transaction) => {
+      //     const OTR = (await transaction.get(firestore().collection('rooms').doc(room._id))).data().OtherToRead;
+      //     transaction.update(firestore().doc(`rooms/${room._id}`), {
+      //       OtherToRead:
+      //       OTR > 0 ? OTR + 1 : 1,
+      //     });
+      //   });
+      // } catch (error) {
+      //   console.log(error);
+      // }
+
       return dispatch(sendMessageSuccess());
     } catch (error) {
       return dispatch(sendMessageFail(error));
@@ -143,10 +196,59 @@ export const sendMessage = (room, text, uri) => {
 };
 
 export const fetchMessages = (room) => {
-  console.log('send message일때 fetch message 자동실행 여부', room);
+  // console.log('send message일때 fetch message 자동실행 여부', room);
   return async (dispatch, getState) => {
     dispatch(fetchMessagesInit());
+    const {
+      user: {
+        data: { userId }, //내 id
+      },
+    } = getState();
     try {
+
+      const OTR = [];
+      await 
+      firestore()
+      .collection('rooms')
+      .doc(room._id)
+      .collection('MESSAGES')
+      .where('user._id', '==', userId)
+      .where('received', '==', false)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          OTR.push(doc.data());
+        });
+      });
+      console.log('OTR',OTR)
+      await firestore()
+      .collection('rooms')
+      .doc(room._id)
+      .update({OtherToRead: OTR.length});
+
+
+      const MTR = [];
+      await 
+      firestore()
+      .collection('rooms')
+      .doc(room._id)
+      .collection('MESSAGES')
+      .where('user._id', '!=', userId)
+      .where('received', '==', false)
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          MTR.push(doc.data());
+        })
+        console.log('MTR', MTR);
+      });
+      await firestore()
+      .collection('rooms')
+      .doc(room._id)
+      .update({MeToRead: MTR.length});
+
+
+      
       await firestore()
         .collection('rooms')
         .doc(room._id)
@@ -155,13 +257,13 @@ export const fetchMessages = (room) => {
         .onSnapshot((querySnapshot) => {
           const fetchmessages = querySnapshot.docs.map((doc) => {
             const firebaseData = doc.data();
-
             const data = {
               _id: doc.id,
               text: '',
               createdAt: new Date().getTime(),
               ...firebaseData,
             };
+            // SystemMessage의 user는 그냥 아무거나 넣어서 state로 넣음
             if (!firebaseData.system) {
               data.user = {
                 ...firebaseData.user,
@@ -169,39 +271,14 @@ export const fetchMessages = (room) => {
             }
             return data;
           });
-
-          const firestoreTransaction = async () => {
-            const reconcilReference = await firestore().doc(
-              `rooms/${room._id}`,
-            );
-            const collectionReference = reconcilReference
-              .collection('MESSAGES')
-              .doc(fetchmessages[0]._id);
-            return firestore().runTransaction(async (transaction) => {
-              const messageSnapshot = await transaction.get(reconcilReference);
-              const unreadSnapshot = await transaction.get(collectionReference);
-
-              if (!unreadSnapshot.data().received) {
-                transaction.update(reconcilReference, {
-                  unReadMessageCount: messageSnapshot.data().unReadMessageCount
-                    ? messageSnapshot.data().unReadMessageCount + 1
-                    : 1,
-                });
-              } else {
-                console.log(
-                  `${unreadSnapshot.data().text} ${
-                    unreadSnapshot.data().imgage
-                  }메시지를 상대방이 읽었음`,
-                );
-              }
-            });
-          };
-          firestoreTransaction()
-            .then(() => console.log('읽음확인 검증!'))
-            .catch((err) => console.error(err));
-
+          // console.log('fetchmessages', fetchmessages)
           return dispatch(fetchMessagesSuccess(fetchmessages));
         });
+
+
+      
+    
+
     } catch (error) {
       return dispatch(fetchMessagesFail(error));
     }
@@ -213,14 +290,11 @@ export const fetchMessages = (room) => {
 //   const reconcilReference = await firestore()
 //   .doc(`rooms/UvTHR52PYAdLjSoteyqq`);
 //   const collectionReference = reconcilReference.collection('MESSAGES').doc('0sJXXHOspJhjH0cKOhJL');
-//   console.log("🚀 ~ file: messageActions.js ~ line 210 ~ firestoreTransaction ~ collection", collectionReference)
 
 //     return firestore().runTransaction(async transaction => {
 //       const messageSnapshot = await transaction.get(reconcilReference)
-//       console.log("🚀 ~ file: messageActions.js ~ line 202 ~ returnfirestore ~ messageSnapshot", messageSnapshot)
 
 //       const unreadSnapshot = await transaction.get(collectionReference)
-//       console.log("🚀 ~ file: messageActions.js ~ line 207 ~ returnfirestore ~ unreadSnapshot", unreadSnapshot)
 
 //       if (!unreadSnapshot.data().received) {
 //       transaction.update(reconcilReference, {

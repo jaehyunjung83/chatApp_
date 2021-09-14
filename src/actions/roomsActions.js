@@ -48,9 +48,9 @@ export const fetchRooms = () => {
         .orderBy('latestMessage.createdAt', 'desc')
         .onSnapshot((querySnapshot) => {
           //console.log('data=', querySnapshot.empty);
-          let data = [];
+          let roomdata = [];
           if (!querySnapshot?.empty) {
-            data = querySnapshot.docs.map((documentSnapshot) => {
+            roomdata = querySnapshot.docs.map((documentSnapshot) => {
               return {
                 _id: documentSnapshot.id,
                 // give defaults
@@ -59,11 +59,12 @@ export const fetchRooms = () => {
                   text: '',
                   createdAt: '',
                 },
-                unReadMessageCount: '',
+                OtherToRead: '',
+                MeToRead: '',
                 ...documentSnapshot.data(),
               };
             });
-            return dispatch(fetchRoomsSuccess(data));
+            return dispatch(fetchRoomsSuccess(roomdata));
           }
         });
     } catch (error) {

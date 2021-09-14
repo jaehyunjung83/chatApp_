@@ -3,7 +3,6 @@ const admin = require('firebase-admin');
 const faker = require('faker');
 const serviceAccount = require('./djsl-9198c-firebase-adminsdk-2cj0l-b59c845556.json');
 
-
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://djsl-9198c.firebaseio.com',
@@ -92,7 +91,8 @@ exports.ListProducts = functions.https.onCall((data, context) => {
 });
 
 exports.MessageNotify = functions.firestore
-  .document('/rooms/{collectionId}/MESSAGES/{documentId}')
+  // .document('/rooms/{collectionId}/MESSAGES/{documentId}')
+  .document('/rooms/{documentId}/MESSAGES/{documentId}')
   .onUpdate(async (change, context) => {
     // Get an object representing the document
     // e.g. {'name': 'Marie', 'age': 66}
@@ -102,6 +102,7 @@ exports.MessageNotify = functions.firestore
       'fQw7nwfATbmFm6h8c5xEiA:APA91bET7ECcmOfnvdJ_9jTfibA0iw-Xj4qFNqft-FN7VZt0OCQ2U1ovk0dYl5E2t1jVrpYi4v54xA-59Hcr6CH2aCkycNmVpYfn8jqhpU1ti1lZ7iZR8OKId0UeYTTZj8Alcvb6dskT',
       // 추가 등록가능
     ];
+
     const newValue = change.after.data();
 
     // ...or the previous value before this update
@@ -112,7 +113,7 @@ exports.MessageNotify = functions.firestore
     const payLoad = {
       notification: {
         // user.name 없는 걸로 나옴!!! 수정해야 함!
-        body: newValue.user.name + '님에게 온 메시지',
+        body: newValue.user.name,
         title: newValue.text,
         sound: '3',
       },
@@ -121,7 +122,7 @@ exports.MessageNotify = functions.firestore
         message: newValue.text,
         delivered_priority: 'high',
         type: 'Room',
-        roomid: context.params.collectionId,
+        roomid: context.params.documentId,
         messageid: context.params.documentId,
       },
     };
@@ -133,6 +134,7 @@ exports.MessageNotify = functions.firestore
       return response;
     } catch (err) {
       console.log('Error sending notification');
+      console.log(err);
     }
   });
 
@@ -171,4 +173,11 @@ exports.createTeamMember = functions.firestore
 //   response.send('Hello from Firebase!');
 // });
 
-
+// Third function is to check the emulator trigger
+exports.onWriteData = functions.firestore
+  .document('emulatorTest/{docId}')
+  .onWrite((change, context) => {
+    console.log('its working');
+    console.log(JSON.stringify(change.after.data()));
+    return { response: change.after.data() };
+  });

@@ -38,7 +38,7 @@ export default function HomeScreen({ navigation }) {
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={() => <Divider />}
           renderItem={({ item }) => (
-            // console.log('home screen item', item),
+            console.log('home screen item', item),
             <TouchableOpacity
               onPress={() => navigation.navigate('Room', { room: item })}
             >
@@ -47,7 +47,9 @@ export default function HomeScreen({ navigation }) {
                 description={item.latestMessage.text}
                 right={(props) => (
                   <View style={styles.listLatestMessage}>
-                    <Badge style={{ backgroundColor: 'firebrick' }}>{item.unReadMessageCount}</Badge>
+                    {item.OtherToRead ? (
+                    <Badge style={{ backgroundColor: 'firebrick' }}>{item.OtherToRead}</Badge>
+                    ): null}
                     <Text style={styles.listLatestMessageTime}>
                       {dayjs(item.latestMessage.createdAt)
                         .locale('ko')
