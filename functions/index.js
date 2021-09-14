@@ -3,6 +3,8 @@ const admin = require('firebase-admin');
 const faker = require('faker');
 const serviceAccount = require('./djsl-9198c-firebase-adminsdk-2cj0l-b59c845556.json');
 
+// const fs = require('fs');
+
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://djsl-9198c.firebaseio.com',
@@ -11,6 +13,28 @@ admin.initializeApp({
 // admin.initializeApp(functions.config().functions);
 
 console.log('admin initialized');
+
+const db = admin.firestore();
+db.collection('/rooms/AL63ayVAgyKY26ggT2pG/MESSAGES')
+  .doc('1mcrGrdjs2qG3V6JIDAe')
+  .onSnapshot((snap) => {
+    console.log(snap);
+  });
+// const collections = ['rooms'];
+// console.log(collections.length);
+// for (let i = 0; i < collections.length; i++) {
+//   const rawData = [];
+//   rawData.push(fs.readFileSync('./ChatApp.json'));
+//   const arr = JSON.stringify(JSON.parse(rawData));
+//   console.log('arr', arr);
+//   console.log('arr.length', arr.length);
+//   for (let j = 0; j < arr.length; j++) {
+//     db.collection(collections[i])
+//       .add(arr[j])
+//       .then((val) => console.log(val))
+//       .catch((err) => console.log('ERRO: ', err));
+//   }
+// }
 
 // Take the text parameter passed to this HTTP endpoint and insert it into
 // Firestore under the path /messages/:documentId/original

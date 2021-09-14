@@ -438,6 +438,63 @@ Issues? Report them at https://github.com/firebase/firebase-tools/issues and att
 ```
 
 
+#   Firebase Emulator FireStore data 일괄 가져와서 시작하기!!!
+> (https://medium.com/firebase-developers/how-to-import-production-data-from-cloud-firestore-to-the-local-emulator-e82ae1c6ed8)
+
+1. Login to Firebase and Google Cloud:
+(대부분 이미 되어있을 거임!)
+```
+firebase login
+gcloud auth login
+```
+
+2. See the list of your projects and connect to the one you’d like to export data from:
+```
+firebase projects:list
+firebase use djsl-9198c(your-project-name)
+(gcloud 미설치 시 설치 하고 진행)
+gcloud projects list
+```
+필수
+```
+gcloud config set project djsl-9198c(your-project-name)
+```
+
+3. firestore의 모든 collection이하 data를 storage bucket으로 내보내기(내보낼때 가져올 폴더 path를 지정해줌).
+
+    (Export your production data to a Google Cloud Storage bucket, providing a name of your choice:)
+```
+gcloud firestore export gs://djsl-9198c.appspot.com/Users/jjh/Documents/ReactNative/chatApp_/functions
+```
+4. 내보낸 스토리지 버킷의 data를 로컬 특정 폴더(functions emulator돌릴)로 가져오기.
+
+(Now copy this folder to your local machine. I usually do this directly from my project’s functions folder:)
+```
+cd functions
+gsutil (-m)(**생략해서 성공했음**) cp -r gs://your-project-name.appspot.com/your-choosen-folder-name .   (.점 꼭 포함!!)
+```
+
+```
+ gsutil -m cp -r gs://djsl-9198c.appspot.com/Users/jjh/Documents/ReactNative/chatApp_/functions .
+
+ 으로 하면
+
+CommandException: Wrong number of arguments for "cp" command.
+
+에러 남!
+ ```
+
+
+5. 가져온 폴더를 import해서 emulator실행.
+
+(Now we just want to import this folder. This should work with the basic command, thanks to the latest update from Firebase team https://github.com/firebase/firebase-tools/pull/2519.)
+```
+(base) jjh@MacBook-Pro-3 functions % firebase emulators:start --import ./functions       
+```
+
+
+
+
 # 미비점
 
 > user별로 room 나눠서 넣기
