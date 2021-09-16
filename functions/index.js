@@ -132,13 +132,13 @@ exports.MessageNotify = functions.firestore
     // ...or the previous value before this update
     const previousValue = change.before.data();
     console.log('prev', previousValue);
-    console.log('changed', newValue);
+    console.log('changed to', newValue);
     console.log('context', context);
     const payLoad = {
       notification: {
         // user.name 없는 걸로 나옴!!! 수정해야 함!
         title: newValue.user.name,
-        body: newValue.text? newValue.text : newValue.image,
+        body: newValue.text ? newValue.text : newValue.image,
         sound: '1',
       },
       data: {
@@ -153,8 +153,13 @@ exports.MessageNotify = functions.firestore
     };
 
     try {
-      const response = await admin.messaging().sendToDevice(tokens, payLoad);
-      console.log('payLoad.data', payLoad.notification);
+      const response = await admin.messaging().sendToDevice(tokens, payLoad, {
+        // Required for background/quit data-only messages on iOS
+        contentAvailable: true,
+        // Required for background/quit data-only messages on Android
+        priority: 'high',
+      });
+      console.log('payLoad.notification', payLoad.notification);
       console.log('payLoad.data', payLoad.data);
       console.log('Notification Send succesfuully');
       return response;

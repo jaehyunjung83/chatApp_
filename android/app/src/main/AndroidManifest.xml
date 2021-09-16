@@ -29,8 +29,9 @@
 
       <!-- Push Notification -->
 
-      <!-- <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
+       <!-- <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
                     android:value="false"/>
+
       <receiver
       android:name="com.google.android.gms.gcm.GcmReceiver"
       android:exported="true"

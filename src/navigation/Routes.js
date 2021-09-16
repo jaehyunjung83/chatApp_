@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { AppRegistry, Platform, Alert } from 'react-native';
+import React, { useEffect, useCallback, useRef } from 'react';
+import { AppRegistry, Platform, Alert, Vibration } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -15,6 +15,8 @@ import SignUpScreen from '../screens/SignUpScreen';
 import Loading from '../components/Loading';
 import { firebaseNotification } from '../config/firebase';
 import messaging from '@react-native-firebase/messaging';
+import Sound from 'react-native-sound';
+
 
 const ChatAppStack = createStackNavigator();
 const Login = createStackNavigator();
@@ -34,7 +36,7 @@ const LoginStack = ({ navigation }) => {
   );
 };
 
-const ChatApp = ({ navigation, route, remoteMessage }) => {
+const ChatApp = ({ navigation, route }) => {
   // console.log(
   //   'dangerouslyGetState().routes',
   //   navigation.dangerouslyGetState().routes,
@@ -57,10 +59,66 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
   }, []);
 
   // app 열고 있는 도중에 noti왔을 때
-  useEffect((remoteMessage) => {
+  useEffect(() => {
     messaging().onMessage(async (remoteMessage) => {
-      // PushNotification.localNotification(notif);
+      
       console.log('app열려있을 때 function noti: ', remoteMessage);
+      Vibration.vibrate();
+      // Enable playback in silence mode
+      Sound.setCategory('Playback');
+
+      // Load the sound file 'nightowl.mp3' from the app bundle
+      // See notes below about preloading sounds within initialization code below.
+      var nightowl = new Sound('iphonemessage1.mp3', Sound.MAIN_BUNDLE, (error) => {
+        if (error) {
+          console.log('failed to load the sound', error);
+          return;
+        }
+        // loaded successfully
+        console.log('duration in seconds: ' + nightowl.getDuration() + 'number of channels: ' + nightowl.getNumberOfChannels());
+
+        // Play the sound with an onEnd callback
+        nightowl.play((success) => {
+          if (success) {
+            console.log('successfully finished playing');
+          } else {
+            console.log('playback failed due to audio decoding errors');
+          }
+        });
+      });
+
+      // Reduce the volume by half
+      nightowl.setVolume(1);
+
+      // Position the sound to the full right in a stereo field
+      nightowl.setPan(1);
+
+      // Loop indefinitely until stop() is called
+      nightowl.setNumberOfLoops(-1);
+
+      // Get properties of the player instance
+      console.log('volume: ' + nightowl.getVolume());
+      console.log('pan: ' + nightowl.getPan());
+      console.log('loops: ' + nightowl.getNumberOfLoops());
+
+      // Seek to a specific point in seconds
+      nightowl.setCurrentTime(2.5);
+
+      // Get the current playback point in seconds
+      nightowl.getCurrentTime((seconds) => console.log('at ' + seconds));
+
+      // Pause the sound
+      nightowl.pause();
+
+      // Stop the sound and rewind to the beginning
+      nightowl.stop(() => {
+        // Note: If you want to play a sound after stopping and rewinding it,
+        // it is important to call play() in a callback.
+        nightowl.play();
+      });
+
+      // Release the audio player resource
+      nightowl.release();
       Alert.alert(
         `${remoteMessage.notification.title} 님이`,
         // JSON.stringify(remoteMessage.notification.body) + '님이' +
@@ -69,6 +127,11 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
         JSON.stringify(remoteMessage.data.footage) + '에 읽었습니다',
 
         [
+          {
+            text: "다음에",
+            onPress: () => console.log("취소 버튼 Pressed"),
+            style: "cancel"
+          },
           {
             text: 'OK',
             onPress: (route) =>
@@ -83,10 +146,11 @@ const ChatApp = ({ navigation, route, remoteMessage }) => {
               }),
           },
         ],
-        { cancelable: true },
+        { cancelable: false },
       );
+      
     });
-  }, []);
+  },[]);
 
   return (
     <ChatAppStack.Navigator

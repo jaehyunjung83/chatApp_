@@ -7970,6 +7970,11 @@
   "resolved" "https://registry.npmjs.org/react-native-screens/-/react-native-screens-2.17.1.tgz"
   "version" "2.17.1"
 
+"react-native-sound@0.11.1":
+  "integrity" "sha512-6cVmCSOvSjCBmIoc+9FFINpT1nW53KlvF/hIyD1uj+HI4NUOma08zI+8pGIpY9cExPmsOh+OoFX3EOODpY78yw=="
+  "resolved" "https://registry.npmjs.org/react-native-sound/-/react-native-sound-0.11.1.tgz"
+  "version" "0.11.1"
+
 "react-native-tcp@3.3.2":
   "integrity" "sha512-zjFmjAvYOsBkR1MF7htuPlk+uOzTykKaeu/eN+I7fkZ7UqBCW+9u/gJgWCv6Tjfn2tGgku6hsEWril4Oy3zJhg=="
   "resolved" "https://registry.npmjs.org/react-native-tcp/-/react-native-tcp-3.3.2.tgz"
@@ -8019,7 +8024,7 @@
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
-"react-native@*", "react-native@>=0.33", "react-native@>=0.40.0", "react-native@>=0.57", "react-native@>=0.58.4", "react-native@>=0.60.0", "react-native@>=0.61.3", "react-native@0.63.4":
+"react-native@*", "react-native@>=0.33", "react-native@>=0.40.0", "react-native@>=0.57", "react-native@>=0.58.4", "react-native@>=0.60.0", "react-native@>=0.61.3", "react-native@>=0.8.0", "react-native@0.63.4":
   "integrity" "sha512-I4kM8kYO2mWEYUFITMcpRulcy4/jd+j9T6PbIzR0FuMcz/xwd+JwHoLPa1HmCesvR1RDOw9o4D+OFLwuXXfmGw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.63.4.tgz"
   "version" "0.63.4"

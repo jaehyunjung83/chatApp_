@@ -5,5 +5,5 @@
   "search.exclude": {
     "**/node_modules": false
   },
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "java.configuration.updateBuildConfiguration": "automatic"
 }
