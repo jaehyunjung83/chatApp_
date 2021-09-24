@@ -172,8 +172,8 @@ exports.MessageNotify = functions.firestore
 
 exports.test = admin.firestore()
   .doc('/rooms/eOnbPL0z9APRdaiw09me/MESSAGES/4cNdSJWtc9YEbd1lMTgg')
-  .update({ received: true });
-  // .update({ received: false });
+  // .update({ received: true });
+  .update({ received: false });
 // 
 exports.createTeamMember = functions.firestore
   .document('/teamProfile/{teamId}/teamMemberList/{newUserId}')

@@ -16,6 +16,7 @@ import Loading from '../components/Loading';
 import { firebaseNotification } from '../config/firebase';
 import messaging from '@react-native-firebase/messaging';
 import Sound from 'react-native-sound';
+import PushNotification, {Importance} from 'react-native-push-notification';
 
 
 const ChatAppStack = createStackNavigator();
@@ -44,19 +45,22 @@ const ChatApp = ({ navigation, route }) => {
   const { rooms } = useSelector((state) => state.rooms);
 
   // app닫혀있을 떄
-  useEffect(() => {
-    console.log('route', route);
-    messaging().onNotificationOpenedApp((remoteMessage) => {
-      console.log('app닫혀있을 때 function noti:', remoteMessage);
+  // useEffect(() => {
+  //   console.log('route', route);
+  //   messaging().onNotificationOpenedApp((remoteMessage) => {
+  //     console.log('app닫혀있을 때 function noti:', remoteMessage);
+  //     (route) => 
+  //     navigation.navigate(remoteMessage.data.type, {
+  //       room: {
+  //         _id: remoteMessage.data.roomid,
+  //         // messageid: remoteMessage.data.messageid,
+  //       },
+  //     });
 
-      navigation.navigate(remoteMessage.data.type, {
-        room: {
-          _id: remoteMessage.data.roomid,
-          // messageid: remoteMessage.data.messageid,
-        },
-      });
-    });
-  }, []);
+      
+      
+  //   });
+  // }, []);
 
   // app 열고 있는 도중에 noti왔을 때
   useEffect(() => {
