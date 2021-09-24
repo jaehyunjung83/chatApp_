@@ -20,7 +20,12 @@ public class MainActivity extends ReactActivity {
     return "chatApp";
   }
 
+  @Override
+  public void onNewIntent(Intent intent) {
+        
+    super.onNewIntent(intent);
 
+  }
 
 
 }

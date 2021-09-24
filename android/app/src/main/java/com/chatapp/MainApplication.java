@@ -2,7 +2,7 @@ package com.chatapp;
 
 import android.app.Application;
 import android.content.Context;
-import com.RNFetchBlob.RNFetchBlobPackage;
+
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.zmxv.RNSound.RNSoundPackage;
@@ -42,8 +42,8 @@ public class MainApplication extends Application implements ReactApplication {
 //            packages.add(new RNFirebaseNotificationsPackage());
                     // new ReactNativePushNotificationPackage();
 
-                    new RNFetchBlobPackage();
-                    new RNFSPackage();
+                    // new RNFetchBlobPackage();
+                    // new RNFSPackage();
 
                     return packages;
                 }

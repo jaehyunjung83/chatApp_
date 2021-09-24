@@ -161,6 +161,7 @@ exports.MessageNotify = functions.firestore
       });
       console.log('payLoad.notification', payLoad.notification);
       console.log('payLoad.data', payLoad.data);
+      console.log('그림 type: ', typeof(payLoad.body));
       console.log('Notification Send succesfuully');
       return response;
     } catch (err) {
@@ -169,6 +170,11 @@ exports.MessageNotify = functions.firestore
     }
   });
 
+exports.test = admin.firestore()
+  .doc('/rooms/eOnbPL0z9APRdaiw09me/MESSAGES/4cNdSJWtc9YEbd1lMTgg')
+  .update({ received: true });
+  // .update({ received: false });
+// 
 exports.createTeamMember = functions.firestore
   .document('/teamProfile/{teamId}/teamMemberList/{newUserId}')
   .onUpdate(async (change, context) => {

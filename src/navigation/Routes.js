@@ -62,94 +62,62 @@ const ChatApp = ({ navigation, route }) => {
   useEffect(() => {
     messaging().onMessage(async (remoteMessage) => {
       
-      console.log('app열려있을 때 function noti: ', remoteMessage);
-      Vibration.vibrate();
-      // Enable playback in silence mode
-      Sound.setCategory('Playback');
+      // console.log('app열려있을 때 function noti: ', remoteMessage);
+      // Vibration.vibrate();
+      // Sound.setCategory('Playback');
+      // var nightowl = new Sound('iphonemessage1.mp3', Sound.MAIN_BUNDLE, (error) => {
+      //   if (error) {
+      //     console.log('failed to load the sound', error);
+      //     return;
+      //   }
+      //   console.log('duration in seconds: ' + nightowl.getDuration() + 'number of channels: ' + nightowl.getNumberOfChannels());
+      //   nightowl.play((success) => {
+      //     if (success) {
+      //       console.log('successfully finished playing');
+      //     } else {
+      //       console.log('playback failed due to audio decoding errors');
+      //     }
+      //   });
+      // });
+      // nightowl.setVolume(1);
+      // nightowl.setPan(1);
+      // nightowl.setNumberOfLoops(-1);
+      // console.log('volume: ' + nightowl.getVolume());
+      // console.log('pan: ' + nightowl.getPan());
+      // console.log('loops: ' + nightowl.getNumberOfLoops());
+      // nightowl.setCurrentTime(2.5);
+      // nightowl.getCurrentTime((seconds) => console.log('at ' + seconds));
+      // nightowl.pause();
+      // nightowl.stop(() => {
+      //   nightowl.play();
+      // });
+      // nightowl.release();
+      // Alert.alert(
+      //   `${remoteMessage.notification.title} 님이`,
+      //   '\n' +
+      //   JSON.stringify(remoteMessage.notification.body) + '메시지를' +
+      //   JSON.stringify(remoteMessage.data.footage) + '에 읽었습니다',
 
-      // Load the sound file 'nightowl.mp3' from the app bundle
-      // See notes below about preloading sounds within initialization code below.
-      var nightowl = new Sound('iphonemessage1.mp3', Sound.MAIN_BUNDLE, (error) => {
-        if (error) {
-          console.log('failed to load the sound', error);
-          return;
-        }
-        // loaded successfully
-        console.log('duration in seconds: ' + nightowl.getDuration() + 'number of channels: ' + nightowl.getNumberOfChannels());
-
-        // Play the sound with an onEnd callback
-        nightowl.play((success) => {
-          if (success) {
-            console.log('successfully finished playing');
-          } else {
-            console.log('playback failed due to audio decoding errors');
-          }
-        });
-      });
-
-      // Reduce the volume by half
-      nightowl.setVolume(1);
-
-      // Position the sound to the full right in a stereo field
-      nightowl.setPan(1);
-
-      // Loop indefinitely until stop() is called
-      nightowl.setNumberOfLoops(-1);
-
-      // Get properties of the player instance
-      console.log('volume: ' + nightowl.getVolume());
-      console.log('pan: ' + nightowl.getPan());
-      console.log('loops: ' + nightowl.getNumberOfLoops());
-
-      // Seek to a specific point in seconds
-      nightowl.setCurrentTime(2.5);
-
-      // Get the current playback point in seconds
-      nightowl.getCurrentTime((seconds) => console.log('at ' + seconds));
-
-      // Pause the sound
-      nightowl.pause();
-
-      // Stop the sound and rewind to the beginning
-      nightowl.stop(() => {
-        // Note: If you want to play a sound after stopping and rewinding it,
-        // it is important to call play() in a callback.
-        nightowl.play();
-      });
-
-      // Release the audio player resource
-      nightowl.release();
-      Alert.alert(
-        `${remoteMessage.notification.title} 님이`,
-        // JSON.stringify(remoteMessage.notification.body) + '님이' +
-        '\n' +
-        JSON.stringify(remoteMessage.notification.body) + '메시지를' +
-        JSON.stringify(remoteMessage.data.footage) + '에 읽었습니다',
-
-        [
-          {
-            text: "다음에",
-            onPress: () => console.log("취소 버튼 Pressed"),
-            style: "cancel"
-          },
-          {
-            text: 'OK',
-            onPress: (route) =>
-              navigation.navigate(remoteMessage.data.type, {
-                room: {
-                  _id: remoteMessage.data.roomid,
-                  // messageid: remoteMessage.data.messageid,
-                },
-                // notifiedmessage: {
-                //   notifiedmessageid: remoteMessage.data.messageid,
-                // },
-              }),
-          },
-        ],
-        { cancelable: false },
-      );
-      
+      //   [
+      //     {
+      //       text: "다음에",
+      //       onPress: () => console.log("취소 버튼 Pressed"),
+      //       style: "cancel"
+      //     },
+      //     {
+      //       text: 'OK',
+      //       onPress: (route) =>
+      //         navigation.navigate(remoteMessage.data.type, {
+      //           room: {
+      //             _id: remoteMessage.data.roomid,
+      //           },
+      //         }),
+      //     },
+      //   ],
+      //   { cancelable: false },
+      // );
     });
+  
   },[]);
 
   return (

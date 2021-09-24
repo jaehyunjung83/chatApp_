@@ -31,13 +31,6 @@ import { launchCamera, launchImageLibrary, ImagePicker } from 'react-native-imag
 // import Synology from '@ltaoo/synology';
 import { Buffer } from 'buffer';
 import _ from 'lodash';
-var util = require('util');
-// var fs = require('fs');
-var RNFS = require('react-native-fs');
-const files = RNFS.readDir(RNFS.DocumentDirectoryPath);
-// const request = require('request');
-// const request = require('../../request');
-import RNFetchBlob from 'rn-fetch-blob';
 
 
 export default function ChatingRoomScreen({ route }) {
