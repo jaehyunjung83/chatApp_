@@ -38,6 +38,7 @@ allprojects {
             url("$rootDir/../node_modules/react-native-reanimated/android")
         }
 
+
         google()
         jcenter()
         maven { url 'https://www.jitpack.io' }

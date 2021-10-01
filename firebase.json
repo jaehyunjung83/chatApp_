@@ -1,35 +1,36 @@
 {
-  "react-native": {
-    "messaging_ios_auto_register_for_remote_messages": true,
-    "messaging_android_headless_task_timeout": 30000,
-    "messaging_android_notification_channel_id": "high-priority",
-    "analytics_auto_collection_enabled": true,
-    "messaging_auto_init_enabled": true
-  },
-  "functions": {
-    "predeploy": [
-      "npm --prefix \"$RESOURCE_DIR\" run lint"
-    ],
-    "source": "functions"
-  },
-  "firestore": {
-    "rules": "firestore.rules"
-  },
-  "emulators": {
+    "react-native": {
+        "messaging_ios_auto_register_for_remote_messages": true,
+        "messaging_android_headless_task_timeout": 30000,
+        "messaging_android_notification_channel_id": "high-priority",
+        "messaging_android_notification_color": "@color/customcolor",
+        "analytics_auto_collection_enabled": true,
+        "messaging_auto_init_enabled": true
+    },
     "functions": {
-      "port": 5001
+        "predeploy": [
+            "npm --prefix \"$RESOURCE_DIR\" run lint"
+        ],
+        "source": "functions"
     },
     "firestore": {
-      "port": 5002
+        "rules": "firestore.rules"
     },
-    "auth": {
-      "port": 5003
-    },
-    "pubsub": {
-      "port": 5004
-    },
-    "ui": {
-      "enabled": true
+    "emulators": {
+        "functions": {
+            "port": 5001
+        },
+        "firestore": {
+            "port": 5002
+        },
+        "auth": {
+            "port": 5003
+        },
+        "pubsub": {
+            "port": 5004
+        },
+        "ui": {
+            "enabled": true
+        }
     }
-  }
 }

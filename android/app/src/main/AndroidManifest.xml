@@ -1,5 +1,7 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.chatapp">
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.chatapp"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -13,9 +15,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACTION_OPEN_DOCUMENT" />
     <permission
-      android:name="${applicationId}.permission.C2D_MESSAGE"
+      android:name="com.chatapp.permission.C2D_MESSAGE"
       android:protectionLevel="signature" />
-    <uses-permission android:name="${applicationId}.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.chatapp.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
@@ -24,21 +26,18 @@
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
-      android:allowBackup="false"
+      android:allowBackup="true"
       android:theme="@style/AppTheme">
 
-      <!-- Push Notification -->
-<!--        <meta-data-->
-<!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
-<!--            android:value="@string/default_notification_channel_id" />-->
-<!--        <meta-data-->
-<!--            android:name="com.dieam.reactnativepushnotification.default_notification_channel_id"-->
-<!--            android:value="@string/default_notification_channel_id" />-->
+    <!-- Change the value to true to enable pop-up for in foreground on receiving remote notifications
+    (for prevent duplicating while showing local notifications set this to false) -->
+    <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
+        android:value="true"/>
 
-<!--        <meta-data-->
-<!--            android:name="com.google.firebase.messaging.default_notification_channel_id"-->
-<!--            android:value="..." />-->
-
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/customcolor"
+        tools:replace="android:resource" />
 
 
         <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationActions" />
@@ -51,24 +50,16 @@
             </intent-filter>
         </receiver>
 
-        <service
-            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
 
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_foreground"
-            android:value="true"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="default_channel_id" />
+
+
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-            android:value="Example-Channel"/>
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-            android:value="Super channel description"/>
-        <meta-data  android:name="com.dieam.reactnativepushnotification.notification_color"
-            android:resource="@color/white"/> <!-- or @android:color/{name} to use a standard color -->
-
-        <!-- ^Push Notification^ -->
+        android:value="Chattings"/>
+    <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
+        android:value="A channel to categorise your notifications"/>
 
 
       <activity
@@ -80,17 +71,34 @@
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
-     <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-        <!-- FirebaseInstanceIdService performs security checks at runtime,
-      no need for explicit permissions despite exported="true"             -->
-        <service android:name=".MyFirebaseInstanceIdService" android:exported="true">
+
+
+        <receiver android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationPublisher" />
+
+        <service
+            android:name="com.dieam.reactnativepushnotification.modules.RNPushNotificationListenerService"
+            android:exported="false" >
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
+
+
+        <!-- FirebaseInstanceIdService performs security checks at runtime,
+      no need for explicit permissions despite exported="true"             -->
+
+
+<!--        <service android:name=".MyFirebaseInstanceIdService" android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
+<!--            </intent-filter>-->
+<!--        </service>-->
+
+
 <!--        <service android:name="io.invertase.firebase.messaging.RNFirebaseMessagingService">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="com.google.firebase.MESSAGING_EVENT" />-->

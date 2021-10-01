@@ -123,7 +123,7 @@ exports.MessageNotify = functions.firestore
 
     const tokens = [
       // 삼성 갤럭시 폴드 device token
-      'fQw7nwfATbmFm6h8c5xEiA:APA91bET7ECcmOfnvdJ_9jTfibA0iw-Xj4qFNqft-FN7VZt0OCQ2U1ovk0dYl5E2t1jVrpYi4v54xA-59Hcr6CH2aCkycNmVpYfn8jqhpU1ti1lZ7iZR8OKId0UeYTTZj8Alcvb6dskT',
+      'cEINuZjASjC6-Cc7rqJ-Y-:APA91bGAMjPsIOkYDkegUgJBU5JST6UaANGQLJzowKo9QnBfRJ8Dxoke7iICp8vo-NH68isE_hyKpTrSC7NwFEsbNK38wKwca7RCCakshwAXLiOOtL2226vi-DA0ddINCaT5nyqEIDGH',
       // 추가 등록가능
     ];
 
@@ -139,7 +139,7 @@ exports.MessageNotify = functions.firestore
         // user.name 없는 걸로 나옴!!! 수정해야 함!
         title: newValue.user.name,
         body: newValue.text ? newValue.text : newValue.image,
-        sound: '1',
+        sound: 'iphonemessage1',
       },
       data: {
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
@@ -161,8 +161,8 @@ exports.MessageNotify = functions.firestore
       });
       console.log('payLoad.notification', payLoad.notification);
       console.log('payLoad.data', payLoad.data);
-      console.log('그림 type: ', typeof(payLoad.body));
-      console.log('Notification Send succesfuully');
+      console.log('Notification Send succesfully');
+      console.log('Send Response: ', response);
       return response;
     } catch (err) {
       console.log('Error sending notification');
@@ -170,11 +170,12 @@ exports.MessageNotify = functions.firestore
     }
   });
 
-exports.test = admin.firestore()
-  .doc('/rooms/eOnbPL0z9APRdaiw09me/MESSAGES/4cNdSJWtc9YEbd1lMTgg')
+exports.test = admin
+  .firestore()
+  .doc('/rooms/eOnbPL0z9APRdaiw09me/MESSAGES/pGREe5xiOMBWkCW7KHkH')
   // .update({ received: true });
   .update({ received: false });
-// 
+
 exports.createTeamMember = functions.firestore
   .document('/teamProfile/{teamId}/teamMemberList/{newUserId}')
   .onUpdate(async (change, context) => {

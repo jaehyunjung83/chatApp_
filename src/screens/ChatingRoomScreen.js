@@ -35,6 +35,7 @@ import _ from 'lodash';
 
 export default function ChatingRoomScreen({ route }) {
   const { room } = route.params;
+  console.log("🚀 ~ file: ChatingRoomScreen.js ~ line 38 ~ ChatingRoomScreen ~ room", room)
   
   const notifiedmessageid = [];
   if (route.params.notifiedmessage != undefined) {

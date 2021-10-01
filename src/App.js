@@ -8,10 +8,10 @@ import Routes from './navigation/Routes';
 import messaging from '@react-native-firebase/messaging';
 
 export default function App() {
-  // useEffect(()=>{
-  //   messaging().getToken().then(token=>{
-  //     console.log(`%c 이 기기 token은 ${token}`, 'color: aqua; backgroundColor: black')})
-  // },[])
+  useEffect(()=>{
+    messaging().getToken().then(token=>{
+      console.log(` 이 기기 token은 %c ${token}`, 'color: aqua; backgroundColor: black')})
+  },[])
 
   return (
     <Provider store={store}>
