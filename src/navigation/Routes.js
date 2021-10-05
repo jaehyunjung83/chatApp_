@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { AppRegistry, Platform, Alert, Vibration } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer, getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { IconButton } from 'react-native-paper';
 
@@ -42,7 +42,10 @@ const ChatApp = ({ navigation, route }) => {
   //   navigation.dangerouslyGetState().routes,
   // );
   const { rooms } = useSelector((state) => state.rooms);
-
+  
+  console.log('route.js route.params', route.params);
+  console.log('route.js getFocusedRouteNameFromRoute', getFocusedRouteNameFromRoute(route));
+  console.log('route.js navigation.dangerouslyGetState().routes',navigation.dangerouslyGetState().routes)
   // app닫혀있을 떄
   // useEffect(() => {
   //   console.log('route', route);
@@ -102,8 +105,12 @@ const ChatApp = ({ navigation, route }) => {
 
   useEffect(() => {
     messaging().onMessage(async (remoteMessage) => {
-      console.log('onmessage route', route);
+      console.log('route.js route.params', route);
       console.log('app열려있을 때: ', remoteMessage);
+      
+      const currentRoute = navigation.dangerouslyGetState().routes[0].state.routes[1].params.room._id;
+      console.log("🚀 ~ file: Routes.js ~ line 112 ~ messaging ~ currentRoute", currentRoute)
+      if (currentRoute != remoteMessage.data.roomid) {
       await PushNotification.localNotification({
         channelId: 'Lunar_Chatting_channel_id2',
         title: remoteMessage.notification.title,
@@ -119,10 +126,11 @@ const ChatApp = ({ navigation, route }) => {
         invokeApp: true,
         visibility: 'public',
       });
+    } else null;
     });
   }, []);
 
-  // PushNotification.deleteChannel('Lunar_Chatting_channel_id');
+  // PushNotification.deleteChannel('fcm_fallback_notification_channel');
   useEffect(() => {
     // PushNotification.channelExists('Lunar_Chatting_channel_id', (exists) => {
     //   // PushNotification.deleteChannel('default_channel_id');
@@ -159,21 +167,26 @@ const ChatApp = ({ navigation, route }) => {
         },
 
         // 알림 클릭했을 때
-        onNotification: function async(notification) {
+        onNotification: function async(notification, route) {
           console.log('Routes.js - onNotification:', notification);
           
           (notification.ticker?.type && notification.action === '확인하기') ?
           console.log(`Push-Notification %c 거친 알림`, 'color: orange') +
+          
+          navigation.navigate('Home')
+          +
           navigation.navigate(notification.ticker.type, {
             room: { _id: notification.ticker.roomid },
           })
+
+
           :
             (notification.ticker?.type && notification.action === '다음에') ?
             console.log(`Push-Notification %c 거친 알림`, 'color: orange') +
             null
             :
               (notification.ticker?.type) ? 
-              console.log(`Push-Notification %c 거친 알림`, 'color: orange') +
+              console.log(`Push-Notification %c 거친 알림`, 'color: yellow') +
               navigation.navigate(notification.ticker.type, {
                 room: { _id: notification.ticker.roomid },
               })
@@ -334,7 +347,7 @@ const ChatApp = ({ navigation, route }) => {
               color={AppStyles.textColor}
               onPress={() =>
                 navigation.navigate('AddRoom') +
-                console.log(navigation.dangerouslyGetState().routes)
+                console.log('route.js navigation.dangerouslyGetState().routes', navigation.dangerouslyGetState().routes)
               }
             />
           ),
@@ -356,7 +369,7 @@ const ChatApp = ({ navigation, route }) => {
         component={ChatingRoomScreen}
         options={({ route, navigation }) => ({
           title: route.params.room._id,
-          // onPress: ()=>console.log(navigation.dangerouslyGetState().routes),
+          onPress: ()=>console.log('route.js navigation.dangerouslyGetState().routes',navigation.dangerouslyGetState().routes),
         })}
       />
     </ChatAppStack.Navigator>
