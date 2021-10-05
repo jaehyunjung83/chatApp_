@@ -140,6 +140,7 @@ exports.MessageNotify = functions.firestore
         title: newValue.user.name,
         body: newValue.text ? newValue.text : newValue.image,
         sound: 'iphonemessage1',
+        android_channel_id: 'default_channel_id',
       },
       data: {
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
@@ -173,8 +174,8 @@ exports.MessageNotify = functions.firestore
 exports.test = admin
   .firestore()
   .doc('/rooms/eOnbPL0z9APRdaiw09me/MESSAGES/pGREe5xiOMBWkCW7KHkH')
-  // .update({ received: true });
-  .update({ received: false });
+  .update({ received: true });
+  // .update({ received: false });
 
 exports.createTeamMember = functions.firestore
   .document('/teamProfile/{teamId}/teamMemberList/{newUserId}')

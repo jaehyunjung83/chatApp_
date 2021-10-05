@@ -82,14 +82,14 @@ const ChatApp = ({ navigation, route }) => {
         console.log('Firebase handled Background!', remoteMessage);
 
         await PushNotification.localNotification({
-          channelId: 'default_channel_id',
+          channelId: 'Lunar_Chatting_channel_id',
           title: remoteMessage.notification.title,
           message: remoteMessage.notification.body,
-          // playSound: true, // (optional) default: true
-          // soundName: "iphonemessage1", // (optional) See `soundName` parameter of `localNotification` function
+          playSound: true, // (optional) default: true
+          soundName: "iphonemessage1", // (optional) See `soundName` parameter of `localNotification` function
           ticker: remoteMessage.data,
           importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
-          // vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+          vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
           // vibration: 300,
           color: 'red',
           invokeApp: true,
@@ -105,15 +105,15 @@ const ChatApp = ({ navigation, route }) => {
       console.log('onmessage route', route);
       console.log('app열려있을 때: ', remoteMessage);
       await PushNotification.localNotification({
-        channelId: 'default_channel_id',
+        channelId: 'Lunar_Chatting_channel_id',
         title: remoteMessage.notification.title,
         message: remoteMessage.notification.body,
         playSound: true, // (optional) default: true
-        soundName: "iphonemessage1", // (optional) See `soundName` parameter of `localNotification` function
+        soundName: 'iphonemessage1', // (optional) See `soundName` parameter of `localNotification` function
         ticker: remoteMessage.data,
         importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
         vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-        vibration: 500,
+        vibration: 1000,
         color: '#ff00ff',
         actions: ['확인하기', '다음에'],
         invokeApp: true,
@@ -122,20 +122,21 @@ const ChatApp = ({ navigation, route }) => {
     });
   }, []);
 
+  PushNotification.deleteChannel('default_channel_id');
   useEffect(() => {
-    PushNotification.channelExists('default_channel_id', (exists) => {
-      // PushNotification.deleteChannel("rn-push-notification-channel-id-4-default-300");
+    PushNotification.channelExists('Lunar_Chatting_channel_id', (exists) => {
+      // PushNotification.deleteChannel('default_channel_id');
       PushNotification.getChannels(function (channel_ids) {
         console.log('routes.js GetChannel: ', channel_ids); // ['channel_id_1']
       });
       if (!exists) {
         PushNotification.createChannel(
           {
-            channelId: 'default_channel_id', // (required)
-            channelName: 'Chattings2', // (required)
+            channelId: 'Lunar_Chatting_channel_id', // (required)
+            channelName: 'Lunar_Chatting', // (required)
             channelDescription: '채팅알림 RNPN', // (optional) default: undefined.
             playSound: true, // (optional) default: true
-            soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+            soundName: 'iphonemessage1', // (optional) See `soundName` parameter of `localNotification` function
             importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
             vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
             vibration: 1000,
@@ -217,6 +218,9 @@ const ChatApp = ({ navigation, route }) => {
         onRegistrationError: function (err) {
           console.error(err.message, err);
         },
+
+        playSound: true,
+        soundName: 'iphonemessage1',
 
         // IOS ONLY (optional): default: all - Permissions to register.
         permissions: {
