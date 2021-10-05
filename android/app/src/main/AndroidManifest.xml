@@ -53,13 +53,13 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="default_channel_id" />
+            android:value="Lunar_Chatting_channel_id" tools:replace="android:value"/>
 
 
         <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_name"
-        android:value="Chattings"/>
+        android:value="Lunar_Chatting"/>
     <meta-data  android:name="com.dieam.reactnativepushnotification.notification_channel_description"
-        android:value="A channel to categorise your notifications"/>
+        android:value="채팅알림 RNPN"/>
 
 
       <activity

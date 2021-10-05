@@ -82,11 +82,11 @@ const ChatApp = ({ navigation, route }) => {
         console.log('Firebase handled Background!', remoteMessage);
 
         await PushNotification.localNotification({
-          channelId: 'Lunar_Chatting_channel_id',
+          channelId: 'Lunar_Chatting_channel_id2',
           title: remoteMessage.notification.title,
           message: remoteMessage.notification.body,
           playSound: true, // (optional) default: true
-          soundName: "iphonemessage1", // (optional) See `soundName` parameter of `localNotification` function
+          soundName: "lunar_alarm", // (optional) See `soundName` parameter of `localNotification` function
           ticker: remoteMessage.data,
           importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
           vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
@@ -105,11 +105,11 @@ const ChatApp = ({ navigation, route }) => {
       console.log('onmessage route', route);
       console.log('app열려있을 때: ', remoteMessage);
       await PushNotification.localNotification({
-        channelId: 'Lunar_Chatting_channel_id',
+        channelId: 'Lunar_Chatting_channel_id2',
         title: remoteMessage.notification.title,
         message: remoteMessage.notification.body,
         playSound: true, // (optional) default: true
-        soundName: 'iphonemessage1', // (optional) See `soundName` parameter of `localNotification` function
+        soundName: 'lunar_alarm', // (optional) See `soundName` parameter of `localNotification` function
         ticker: remoteMessage.data,
         importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
         vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
@@ -122,21 +122,19 @@ const ChatApp = ({ navigation, route }) => {
     });
   }, []);
 
-  PushNotification.deleteChannel('default_channel_id');
+  // PushNotification.deleteChannel('Lunar_Chatting_channel_id');
   useEffect(() => {
-    PushNotification.channelExists('Lunar_Chatting_channel_id', (exists) => {
-      // PushNotification.deleteChannel('default_channel_id');
-      PushNotification.getChannels(function (channel_ids) {
-        console.log('routes.js GetChannel: ', channel_ids); // ['channel_id_1']
-      });
-      if (!exists) {
+    // PushNotification.channelExists('Lunar_Chatting_channel_id', (exists) => {
+    //   // PushNotification.deleteChannel('default_channel_id');
+      
+    //   if (!exists) {
         PushNotification.createChannel(
           {
-            channelId: 'Lunar_Chatting_channel_id', // (required)
+            channelId: 'Lunar_Chatting_channel_id2', // (required)
             channelName: 'Lunar_Chatting', // (required)
             channelDescription: '채팅알림 RNPN', // (optional) default: undefined.
             playSound: true, // (optional) default: true
-            soundName: 'iphonemessage1', // (optional) See `soundName` parameter of `localNotification` function
+            soundName: 'lunar_alarm', // (optional) See `soundName` parameter of `localNotification` function
             importance: Importance.HIGH, // (optional) default: Importance.HIGH. Int value of the Android notification importance
             vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
             vibration: 1000,
@@ -144,8 +142,13 @@ const ChatApp = ({ navigation, route }) => {
           },
           (created) => console.log(`firebase.js : createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
         );
-      }
-    });
+    //   }
+    //   else {
+        PushNotification.getChannels(function (channel_ids) {
+        console.log('routes.js GetChannel: ', channel_ids); // ['channel_id_1']
+      });
+    // }
+    // });
 
     // Must be outside of any component LifeCycle (such as `componentDidMount`).
     const NotiConfigure = async () => {

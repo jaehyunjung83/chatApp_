@@ -139,8 +139,8 @@ exports.MessageNotify = functions.firestore
         // user.name 없는 걸로 나옴!!! 수정해야 함!
         title: newValue.user.name,
         body: newValue.text ? newValue.text : newValue.image,
-        sound: 'iphonemessage1',
-        android_channel_id: 'default_channel_id',
+        sound: 'lunar_alarm',
+        android_channel_id: 'Lunar_Chatting_channel_id',
       },
       data: {
         click_action: 'FLUTTER_NOTIFICATION_CLICK',
